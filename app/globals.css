@@ -6,7 +6,7 @@
 @theme {
   --color-blue: #023e7d;
   --color-dark: #14213d;
-  --color-soft-gray: #EEF0F2;
+  --color-soft-gray: #fafaff;
 }
 
 @custom-variant dark (&:is(.dark *));
