@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Poppins } from "next/font/google";
+import { Montserrat } from "next/font/google";
 
-const poppins = Poppins({
-  subsets: ["latin"], weight: ["100","400", "500", "700"], })
+const font = Montserrat({
+  subsets: ["latin"], weight: ["100","400", "500", "700"], });
 
 export const metadata: Metadata = {
   title: "Next Role",
@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${poppins.className} antialiased`}
+        className={`${font.className} antialiased bg-soft-gray`}
       >
         {children}
       </body>
