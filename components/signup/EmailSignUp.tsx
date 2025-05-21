@@ -2,10 +2,12 @@ import React from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { Card } from "../ui/card";
 
 const EmailSignUp = () => {
   return (
-    <>
+  
+    <Card className="w-full max-w-3xl p-6">
       <div>
         <h1 className="font-bold tracking-tighter text-4xl text-center text-black">
           Sign Up for Free
@@ -62,8 +64,7 @@ const EmailSignUp = () => {
             Log in
           </Link>
         </div>
-      </form>
-    </>
+      </form></Card>
   );
 };
 
