@@ -22,7 +22,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           
           </div>
         </header>
-        <main className="p-4 pt-0">
+        <main className="pt-0">
          {children}
         </main>
       </SidebarInset>
