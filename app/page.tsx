@@ -10,7 +10,7 @@ export default function Home() {
             <span className="text-gray-900">N</span>
             <span className="text-gray-500">R</span>
           </h2>
-          <h2 className="text-xl font-medium">NextRole</h2>
+          <h2 className="text-xl font-medium tracking-tighter">NextRole</h2>
         </div>
         <div className="flex items-center gap-4 bg-gray-100 px-4 lg:px-8 py-2 rounded-full">
           <Link className="hover:underline" href={"/signup"}>
