@@ -18,7 +18,7 @@ const JobCard = () => {
       <h3 className="text-sm font-semibold">Software Engineer</h3>
       <p className="text-xs font-medium text-muted-foreground">Google Cloud</p>
       <p className="text-green-600 text-xs">$80,000 - $100,000</p>
-      <div className="hidden gap-1  group-hover:flex absolute right-2 bottom-2">
+      <div className="lg:hidden gap-1 flex group-hover:flex absolute right-2 bottom-2">
         <a
           href="#"
           target="_blank"

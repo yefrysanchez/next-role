@@ -1,6 +1,5 @@
 import React from "react";
-import { Ellipsis, Plus, Star } from "lucide-react";
-
+import { Plus, Star } from "lucide-react";
 import {
   Dialog,
   DialogClose,
@@ -14,16 +13,16 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import JobCard from "./JobCard";
+import BtnActionColumn from "./BtnActionColumn";
 
 const BoardColumn = () => {
   return (
-    <div className="w-[300px] min-h-[400px] h-full pt-12 bg-white border border-gray-100 rounded-lg">
-      <div className="flex w-full justify-evenly mb-4">
+    <div className="shrink-0 w-ful lg:min-h-[400px] h-full pt-12 bg-white border border-gray-100 rounded-lg">
+      <div className="flex w-full justify-evenly items-center mb-4">
         <Star />
         <h2 className="uppercase font-semibold">wishlist</h2>
-        <button type="button">
-          <Ellipsis />
-        </button>
+
+        <BtnActionColumn />
       </div>
       <Dialog>
         <DialogTrigger className="w-full">
