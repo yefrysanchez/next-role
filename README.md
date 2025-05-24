@@ -2,7 +2,7 @@
 
 **NextRole** is a job application tracker built for junior developers who want to stay organized, focused, and in control of their job hunt. Easily track applications, create custom job boards, and manage progress from wishlist to offer — all in one clean, visual interface.
 
-![nextrole-preview](./public/nextrole-preview.png)
+![nextrole-preview](./public/app-display.png)
 
 ---
 
