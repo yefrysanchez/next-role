@@ -11,8 +11,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="relative">
-        <header className="flex sticky top-0 h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+      <SidebarInset className="relative flex flex-col">
+        <header className="flex fixed top-0 h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1 bg-white border border-gray-100" />
             <Separator
@@ -22,7 +22,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           
           </div>
         </header>
-        <main className="pt-0">
+        <main className="pt-0 flex-1">
          {children}
         </main>
       </SidebarInset>

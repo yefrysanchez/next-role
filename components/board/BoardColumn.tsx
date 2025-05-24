@@ -46,10 +46,10 @@ const BoardColumn = ({ title }: BoardColumnTypes) => {
     }
   };
 
-  const jobs = [1,2,3,4,5,6,7,8,9]
+  const jobs = [1,2,3,4,5,6,7,8,9,10,11]
 
   return (
-    <div className="shrink-0 w-3/4 lg:w-full lg:min-h-[400px] max-h-[80vh] lg:h-full pt-12 bg-white border border-gray-100 rounded-lg flex flex-col">
+    <div className="shrink-0 w-3/4 lg:w-full lg:h-full max-h-[85vh] bg-white pt-12 border border-gray-100 rounded-lg flex flex-col">
       <div className="flex w-full justify-evenly items-center mb-4">
         {handleIcon(title)}
         <h2 className="uppercase font-semibold">{title}</h2>
@@ -127,7 +127,7 @@ const BoardColumn = ({ title }: BoardColumnTypes) => {
         </DialogContent>
       </Dialog>
       <SearchJobs />
-      <div className="mt-4 flex flex-col items-center px-2 pb-8 gap-4 flex-1 overflow-y-scroll overflow-x-hidden">
+      <div className="mt-4 flex flex-col items-center px-2 gap-4 flex-1 overflow-y-scroll overflow-x-hidden">
         
         {
           jobs.map(job => (

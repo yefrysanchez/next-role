@@ -46,12 +46,12 @@ const JobCard = () => {
 
         <AlertDialog>
           <AlertDialogTrigger>
-            <button
+            <div
               className="text-red-500 bg-gray-100 hover:bg-red-100 p-1 rounded-sm cursor-pointer "
-              type="button"
+              role="button"
             >
               <Trash2 size={15} />
-            </button>
+            </div>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
