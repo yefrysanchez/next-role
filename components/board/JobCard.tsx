@@ -20,16 +20,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import JobDetails from "./JobDetails";
 
 const JobCard = () => {
-
-  const columns = ["wishlist", "applied", "interview", "offer"]
+  const columns = ["wishlist", "applied", "interview", "offer"];
 
   return (
-    <div className="bg-gray-50  w-full p-4 rounded-md grid gap-1 mx-2 pb-8 group relative hover:bg-gray-100 cursor-pointer">
-      <h3 className="text-sm font-semibold">Software Engineer</h3>
-      <p className="text-xs font-medium text-muted-foreground">Google Cloud</p>
-      <p className="text-green-600 text-xs">$80,000 - $100,000</p>
+    <div className="bg-gray-50  w-full p-4 rounded-md grid gap-1 mx-2 pb-8 group relative hover:bg-gray-100 cursor-grab active:cursor-grabbing">
+      <JobDetails>
+        <h3 className="text-sm font-semibold">Software Engineer</h3>
+        <p className="text-xs font-medium text-muted-foreground">
+          Google Cloud
+        </p>
+        <p className="text-green-600 text-xs">$80,000 - $100,000</p>
+      </JobDetails>
       <div className="lg:hidden gap-1 flex group-hover:flex absolute right-2 bottom-2">
         <a
           href="#"
@@ -74,12 +78,11 @@ const JobCard = () => {
         <DropdownMenuContent>
           <DropdownMenuLabel className="font-bold">Move to</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {
-            columns.map(move => (
-              <DropdownMenuItem key={move} className="capitalize">{move}</DropdownMenuItem>
-            ))
-          }
-          
+          {columns.map((move) => (
+            <DropdownMenuItem key={move} className="capitalize">
+              {move}
+            </DropdownMenuItem>
+          ))}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

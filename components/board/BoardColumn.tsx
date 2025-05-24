@@ -24,6 +24,7 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import JobCard from "./JobCard";
 import BtnActionColumn from "./BtnActionColumn";
+import SearchJobs from "./SearchJobs";
 
 type BoardColumnTypes = {
   title: string;
@@ -125,6 +126,7 @@ const BoardColumn = ({ title }: BoardColumnTypes) => {
           </form>
         </DialogContent>
       </Dialog>
+      <SearchJobs />
       <div className="mt-4 flex flex-col items-center px-2 pb-8 gap-4 flex-1 overflow-y-scroll overflow-x-hidden">
         
         {
