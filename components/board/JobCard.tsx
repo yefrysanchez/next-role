@@ -1,4 +1,4 @@
-import { ExternalLink, Trash2 } from "lucide-react";
+import { ArrowRightLeft, ExternalLink, Trash2 } from "lucide-react";
 import React from "react";
 import {
   AlertDialog,
@@ -12,9 +12,21 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 const JobCard = () => {
+
+  const columns = ["wishlist", "applied", "interview", "offer"]
+
   return (
-    <div className="bg-gray-50 p-4 rounded-md grid gap-1 mx-2 pb-8 group relative hover:bg-gray-100 cursor-pointer">
+    <div className="bg-gray-50  w-full p-4 rounded-md grid gap-1 mx-2 pb-8 group relative hover:bg-gray-100 cursor-pointer">
       <h3 className="text-sm font-semibold">Software Engineer</h3>
       <p className="text-xs font-medium text-muted-foreground">Google Cloud</p>
       <p className="text-green-600 text-xs">$80,000 - $100,000</p>
@@ -47,11 +59,29 @@ const JobCard = () => {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction className="text-red-500 bg-red-50 hover:bg-red-100 px-8">Delete</AlertDialogAction>
+              <AlertDialogAction className="text-red-500 bg-red-50 hover:bg-red-100 px-8">
+                Delete
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
       </div>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger className="absolute right-2 top-2 lg:hidden">
+          <ArrowRightLeft size={15} />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel className="font-bold">Move to</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          {
+            columns.map(move => (
+              <DropdownMenuItem key={move} className="capitalize">{move}</DropdownMenuItem>
+            ))
+          }
+          
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };

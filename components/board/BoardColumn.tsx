@@ -1,5 +1,12 @@
 import React from "react";
-import { Plus, Star } from "lucide-react";
+import {
+  AlarmClock,
+  Columns3Cog,
+  Handshake,
+  Phone,
+  Plus,
+  Star,
+} from "lucide-react";
 import {
   Dialog,
   DialogClose,
@@ -9,24 +16,48 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
+
+
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import JobCard from "./JobCard";
 import BtnActionColumn from "./BtnActionColumn";
 
-const BoardColumn = () => {
+type BoardColumnTypes = {
+  title: string;
+};
+
+const BoardColumn = ({ title }: BoardColumnTypes) => {
+  const handleIcon = (title: string) => {
+    switch (title) {
+      case "wishlist":
+        return <Star />;
+      case "applied":
+        return <AlarmClock />;
+      case "interview":
+        return <Phone />;
+      case "offer":
+        return <Handshake />;
+      default:
+        return <Columns3Cog />;
+    }
+  };
+
+  const jobs = [1,2,3,4,5,6,7,8,9]
+
   return (
-    <div className="shrink-0 w-ful lg:min-h-[400px] h-full pt-12 bg-white border border-gray-100 rounded-lg">
+    <div className="shrink-0 w-3/4 lg:w-full lg:min-h-[400px] max-h-[80vh] lg:h-full pt-12 bg-white border border-gray-100 rounded-lg flex flex-col">
       <div className="flex w-full justify-evenly items-center mb-4">
-        <Star />
-        <h2 className="uppercase font-semibold">wishlist</h2>
+        {handleIcon(title)}
+        <h2 className="uppercase font-semibold">{title}</h2>
 
         <BtnActionColumn />
       </div>
       <Dialog>
-        <DialogTrigger className="w-full">
-          <div className="flex w-full justify-center bg-gray-50 hover:bg-gray-100 cursor-pointer p-2">
+        <DialogTrigger className="w-full px-2">
+          <div className="flex w-full justify-center bg-gray-50 hover:bg-gray-100 cursor-pointer p-2 rounded-lg">
             <Plus size={30} />
           </div>
         </DialogTrigger>
@@ -94,8 +125,13 @@ const BoardColumn = () => {
           </form>
         </DialogContent>
       </Dialog>
-      <div className="mt-4">
-        <JobCard />
+      <div className="mt-4 flex flex-col items-center px-2 pb-8 gap-4 flex-1 overflow-y-scroll overflow-x-hidden">
+        
+        {
+          jobs.map(job => (
+            <JobCard key={job} />
+          ))
+        }
       </div>
     </div>
   );
