@@ -17,7 +17,7 @@ import BtnActionColumn from "./BtnActionColumn";
 
 const BoardColumn = () => {
   return (
-    <div className="shrink-0 w-full lg:w-[300px] lg:min-h-[400px] h-full pt-12 bg-white border border-gray-100 rounded-lg">
+    <div className="shrink-0 w-ful lg:min-h-[400px] h-full pt-12 bg-white border border-gray-100 rounded-lg">
       <div className="flex w-full justify-evenly items-center mb-4">
         <Star />
         <h2 className="uppercase font-semibold">wishlist</h2>
