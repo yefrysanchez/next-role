@@ -20,15 +20,15 @@ import {
 const boards = [
   {
     title: "Software Engineer Board",
-    url: "/app",
+    url: "/boards/board",
   },
   {
     title: "Cloud Engineer Board",
-    url: "#",
+    url: "/boards/board"
   },
   {
     title: "Back-end Board",
-    url: "#",
+    url: "/boards/board"
   },
 ];
 
@@ -42,7 +42,7 @@ const data = {
   navMain: [
     {
       title: "Boards",
-      url: "#",
+      url: "/boards",
       icon: SquareTerminal,
       isActive: true,
       items: boards,

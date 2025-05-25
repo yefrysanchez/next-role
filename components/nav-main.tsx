@@ -57,7 +57,7 @@ export function NavMain({
                   {item.title === "Boards" && (
                     <SidebarMenuSubItem>
                       <SidebarMenuSubButton asChild>
-                        <Link href={"/app"}>
+                        <Link href={"/boards"}>
                           <span>Boards Hub</span>
                         </Link>
                       </SidebarMenuSubButton>
