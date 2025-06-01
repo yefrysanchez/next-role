@@ -1,8 +1,12 @@
+"use server"
 import BoardCard from "@/components/board-hub/BoardCard";
 import CreateBoard from "@/components/board-hub/CreateBoard";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import React from "react";
 
-const Page = () => {
+const Page = async () => {
   const boards = [
     {
       title: "Software Engineer",
@@ -21,6 +25,14 @@ const Page = () => {
       url: "/boards/board",
     },
   ];
+
+    const session = await auth.api.getSession({
+        headers: await headers(),
+      });
+    
+      if( !session){
+        return redirect("/login")
+      }
 
   return (
     <div className="pt-12 px-4">

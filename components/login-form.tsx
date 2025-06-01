@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { signIn } from "@/server/users";
 
 export function LoginForm({
   className,
@@ -48,7 +49,7 @@ export function LoginForm({
                 </div>
                 <Input id="password" type="password" placeholder="••••••••••" required />
               </div>
-               <Button type="submit" className="w-full">
+               <Button type="submit" onClick={signIn} className="w-full">
                   Login
                 </Button>
               <div className="flex items-center gap-4">

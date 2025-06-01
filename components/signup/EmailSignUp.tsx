@@ -1,8 +1,8 @@
 import React from "react";
 import { Input } from "../ui/input";
-import { Button } from "../ui/button";
 import Link from "next/link";
 import { Card } from "../ui/card";
+import SignUpBtn from "../SignUpBtn";
 
 const EmailSignUp = () => {
   return (
@@ -52,9 +52,7 @@ const EmailSignUp = () => {
           numbers, 1 upper, 1 lower
         </p>
 
-        <Button type="submit" className="w-full cursor-pointer font-bold">
-          Create Account
-        </Button>
+        <SignUpBtn />
         <div className="mt-4 text-sm flex gap-1 justify-center">
           Already have an account?
           <Link
