@@ -1,26 +1,20 @@
 "use server";
 
 import { auth } from "@/lib/auth";
+import { SignInTypes } from "@/lib/types";
 
-export const signIn = async () => {
+export const signIn = async (data: SignInTypes ) => {
   await auth.api.signInEmail({
-    body: {
-      email: "testing@test.com",
-      password: "password123",
-    },
+    body: data,
   });
 };
 
-export const signUp = async () => {
+export const signUp = async (email: string, password: string, lastName: string, firstName: string) => {
   await auth.api.signUpEmail({
     body: {
-       email: "testing@test.com",
-      password: "password123",
-      name: "Test User",
+      email,
+      password,
+      name: `${firstName} ${lastName}`,
     },
   });
-};
-
-export const signOut = async () => {
-  await auth.api.signOut();
 };
