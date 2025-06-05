@@ -1,14 +1,15 @@
-"use client";
+"use client"
 import EmailSignUp from "@/components/signup/EmailSignUp";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React, { useState } from "react";
 
-const Page = () => {
+const SignUpOptions = () => {
   const [emailSignUp, setEmailSignUp] = useState(false);
+
   return (
-    <main className="min-h-screen flex items-center justify-center p-6 md:p-10">
-      {emailSignUp ? (
+    <>
+     {emailSignUp ? (
         <section>
          <EmailSignUp />
         </section>
@@ -44,8 +45,8 @@ const Page = () => {
           </div>
         </section>
       )}
-    </main>
-  );
-};
+    </>
+  )
+}
 
-export default Page;
+export default SignUpOptions

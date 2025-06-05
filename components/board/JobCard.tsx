@@ -26,7 +26,7 @@ const JobCard = () => {
   const columns = ["wishlist", "applied", "interview", "offer"];
 
   return (
-    <div className="bg-gray-50  w-full p-4 rounded-md grid gap-1 mx-2 pb-8 group relative hover:bg-gray-100 cursor-grab active:cursor-grabbing">
+    <div className="bg-gray-50  w-full p-4 rounded-md grid gap-1 mx-2 pb-8 group relative hover:bg-gray-100 cursor-grab active:cursor-grabbing active:opacity-65">
       <JobDetails>
         <h3 className="text-sm font-semibold">Software Engineer</h3>
         <p className="text-xs font-medium text-muted-foreground">

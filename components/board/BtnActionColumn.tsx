@@ -53,7 +53,8 @@ const BtnActionColumn = () => {
         <DropdownMenuLabel className="font-bold">Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
 
-        <button
+        <div
+          role="button"
           className="w-full flex items-center px-2 py-2 text-sm hover:bg-gray-100"
           onClick={() => console.log("Edit")}
         >
@@ -83,7 +84,7 @@ const BtnActionColumn = () => {
               </form>
             </DialogContent>
           </Dialog>
-        </button>
+        </div>
 
         <AlertDialog>
           <AlertDialogTrigger asChild>
