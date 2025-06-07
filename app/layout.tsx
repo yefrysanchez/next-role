@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Montserrat } from "next/font/google";
+import CookiesConsent from "@/components/CookiesConsent";
 
 const font = Montserrat({
   subsets: ["latin"], weight: ["100","400", "500", "700"], });
@@ -21,6 +22,7 @@ export default function RootLayout({
         className={`${font.className} antialiased bg-soft-gray`}
       >
         {children}
+        <CookiesConsent />
       </body>
     </html>
   );
