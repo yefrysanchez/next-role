@@ -1,3 +1,4 @@
+import BackBtn from "@/components/BackBtn";
 import BoardColumn from "@/components/board/BoardColumn";
 import ChangeBoardName from "@/components/board/ChangeBoardName";
 import { Pencil } from "lucide-react";
@@ -6,7 +7,8 @@ import React from "react";
 
 const Page = () => {
   return (
-    <div className="h-full border-t bg-gray-100">
+    <div className="h-full border-t bg-gray-100 pt-16 px-4">
+      <BackBtn/>
       <div className="group flex flex-col items-center justify-center gap-2  py-4 ">
         <h1 className="font-bold tracking-tighter text-4xl text-centerflex justify-center items-start gap-2 group">
           Board Title
@@ -17,7 +19,7 @@ const Page = () => {
           </button>
         </ChangeBoardName>
       </div>
-      <section className="lg:grid lg:grid-cols-4 gap-2 px-4 flex overflow-x-scroll lg:overflow-x-auto">
+      <section className="lg:grid lg:grid-cols-4 gap-2 flex overflow-x-scroll lg:overflow-x-auto">
         <BoardColumn title="wishlist" />
         <BoardColumn title="applied" />
         <BoardColumn title="interview" />
