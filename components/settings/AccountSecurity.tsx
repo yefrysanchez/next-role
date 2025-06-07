@@ -2,9 +2,11 @@ import React from "react";
 import PasswordInput from "./PasswordInput";
 import { Button } from "../ui/button";
 
+
 const AccountSecurity = () => {
   return (
     <section className="grid gap-6 pt-4">
+   
       <div>
         <h2 className="font-bold text-2xl tracking-tighter">
           Account Security
