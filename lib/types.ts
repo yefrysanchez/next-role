@@ -1,14 +1,14 @@
 export type SignInTypes = {
-    email: string;
-    password: string;
-}
+  email: string;
+  password: string;
+};
 
 export type SignUpTypes = {
-    email: string;
-    password: string;
-    firstName: string;
-    lastName: string;
-}
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+};
 
 export type JobModality = "Remote" | "Hybrid" | "On Site";
 
@@ -27,4 +27,10 @@ export type KanbanColumns = {
   applied: Job[];
   interview: Job[];
   offer: Job[];
+};
+
+export type ColumnsTypes = {
+  columnTitle: string;
+  order: number;
+  jobs: Job[];
 };

@@ -1,9 +1,24 @@
-import { pgTable, text, timestamp, boolean, serial, varchar, integer, pgEnum } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  text,
+  timestamp,
+  boolean,
+  serial,
+  varchar,
+  integer,
+  pgEnum,
+  uuid,
+} from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 // Enums
 export const modalityEnum = pgEnum("modality", ["remote", "on_site", "hybrid"]);
-export const columnEnum = pgEnum("column_title", ["rejected", "applied", "interview", "offer"]);
+export const columnEnum = pgEnum("column_title", [
+  "rejected",
+  "applied",
+  "interview",
+  "offer",
+]);
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -67,10 +82,12 @@ export const verification = pgTable("verification", {
 
 // Boards
 export const boards = pgTable("boards", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").defaultRandom().primaryKey(),
   title: varchar("title", { length: 256 }).notNull(),
   slug: varchar("slug", { length: 256 }).notNull().unique(),
-  userId: integer("user_id").notNull().references(() => user.id),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => user.id),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -78,7 +95,9 @@ export const boards = pgTable("boards", {
 export const columns = pgTable("columns", {
   id: serial("id").primaryKey(),
   title: columnEnum("title").notNull(),
-  boardId: integer("board_id").notNull().references(() => boards.id),
+  boardId: integer("board_id")
+    .notNull()
+    .references(() => boards.id),
   order: integer("order").notNull(),
 });
 
@@ -91,7 +110,9 @@ export const jobs = pgTable("jobs", {
   url: text("url"),
   salary: varchar("salary", { length: 128 }),
   description: text("description"),
-  columnId: integer("column_id").notNull().references(() => columns.id),
+  columnId: integer("column_id")
+    .notNull()
+    .references(() => columns.id),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -132,4 +153,8 @@ export const schema = {
   boards,
   columns,
   jobs,
+  userRelations,
+  boardRelations,
+  columnRelations,
+  jobRelations,
 };
