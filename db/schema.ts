@@ -82,10 +82,10 @@ export const verification = pgTable("verification", {
 
 // Boards
 export const boards = pgTable("boards", {
-  id: uuid("id").defaultRandom().primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(), 
   title: varchar("title", { length: 256 }).notNull(),
   slug: varchar("slug", { length: 256 }).notNull().unique(),
-  userId: integer("user_id")
+  userId: text("user_id")
     .notNull()
     .references(() => user.id),
   createdAt: timestamp("created_at").defaultNow(),
