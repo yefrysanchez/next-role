@@ -1,5 +1,5 @@
 import React from "react";
-import { AlarmClock, Columns3Cog, Handshake, Phone, Star } from "lucide-react";
+import { AlarmClock, Columns3Cog, Handshake, Phone, SquareX } from "lucide-react";
 
 import JobCard from "./JobCard";
 import BtnActionColumn from "./BtnActionColumn";
@@ -15,8 +15,8 @@ type BoardColumnTypes = {
 const BoardColumn = ({ title, jobs }: BoardColumnTypes) => {
   const handleIcon = (title: string) => {
     switch (title) {
-      case "wishlist":
-        return <Star />;
+      case "closed":
+        return <SquareX />
       case "applied":
         return <AlarmClock />;
       case "interview":

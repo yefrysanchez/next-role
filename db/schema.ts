@@ -1,4 +1,9 @@
-import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, serial, varchar, integer, pgEnum } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+
+// Enums
+export const modalityEnum = pgEnum("modality", ["remote", "on_site", "hybrid"]);
+export const columnEnum = pgEnum("column_title", ["rejected", "applied", "interview", "offer"]);
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -60,9 +65,71 @@ export const verification = pgTable("verification", {
   ),
 });
 
+// Boards
+export const boards = pgTable("boards", {
+  id: serial("id").primaryKey(),
+  title: varchar("title", { length: 256 }).notNull(),
+  slug: varchar("slug", { length: 256 }).notNull().unique(),
+  userId: integer("user_id").notNull().references(() => user.id),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Columns
+export const columns = pgTable("columns", {
+  id: serial("id").primaryKey(),
+  title: columnEnum("title").notNull(),
+  boardId: integer("board_id").notNull().references(() => boards.id),
+  order: integer("order").notNull(),
+});
+
+// Jobs
+export const jobs = pgTable("jobs", {
+  id: serial("id").primaryKey(),
+  title: varchar("title", { length: 256 }).notNull(),
+  company: varchar("company", { length: 256 }).notNull(),
+  modality: modalityEnum("modality").notNull(),
+  url: text("url"),
+  salary: varchar("salary", { length: 128 }),
+  description: text("description"),
+  columnId: integer("column_id").notNull().references(() => columns.id),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// ------------------------------- RELATIONS --------------------------------
+
+export const userRelations = relations(user, ({ many }) => ({
+  boards: many(boards),
+}));
+
+export const boardRelations = relations(boards, ({ one, many }) => ({
+  user: one(user, {
+    fields: [boards.userId],
+    references: [user.id],
+  }),
+  columns: many(columns),
+}));
+
+export const columnRelations = relations(columns, ({ one, many }) => ({
+  board: one(boards, {
+    fields: [columns.boardId],
+    references: [boards.id],
+  }),
+  jobs: many(jobs),
+}));
+
+export const jobRelations = relations(jobs, ({ one }) => ({
+  column: one(columns, {
+    fields: [jobs.columnId],
+    references: [columns.id],
+  }),
+}));
+
 export const schema = {
   user,
   session,
   account,
   verification,
+  boards,
+  columns,
+  jobs,
 };

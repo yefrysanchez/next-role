@@ -22,7 +22,7 @@ const Page = () => {
         </ChangeBoardName>
       </div>
       <section className="xl:grid xl:grid-cols-4 gap-2 flex overflow-x-scroll lg:overflow-x-auto">
-        <BoardColumn jobs={placeholderJobs.closed} title="Closed" />
+        <BoardColumn jobs={placeholderJobs.closed} title="closed" />
         <BoardColumn jobs={placeholderJobs.applied} title="applied" />
         <BoardColumn jobs={placeholderJobs.interview} title="interview" />
         <BoardColumn jobs={placeholderJobs.offer} title="offer" />
