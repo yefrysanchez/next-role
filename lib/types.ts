@@ -9,3 +9,22 @@ export type SignUpTypes = {
     firstName: string;
     lastName: string;
 }
+
+export type JobModality = "Remote" | "Hybrid" | "On Site";
+
+export type Job = {
+  id: number;
+  company: string;
+  title: string;
+  modality: JobModality;
+  url?: string;
+  salary?: string;
+  description?: string;
+};
+
+export type KanbanColumns = {
+  closed: Job[];
+  applied: Job[];
+  interview: Job[];
+  offer: Job[];
+};
