@@ -1,27 +1,34 @@
-import React from "react";
-import { AlarmClock, Columns3Cog, Handshake, Phone, SquareX } from "lucide-react";
+import React, { Suspense } from "react";
+import {
+  AlarmClock,
+  Columns3Cog,
+  Handshake,
+  Phone,
+  SquareX,
+} from "lucide-react";
 
 import JobCard from "./JobCard";
 import BtnActionColumn from "./BtnActionColumn";
 import SearchJobs from "./SearchJobs";
 import CreateJob from "./CreateJob";
 import { getJobs } from "@/lib/actions/actions";
+import { Skeleton } from "../ui/skeleton";
 
 type BoardColumnTypes = {
   title: string;
   column: {
-    id: number
-    title: string
-    boardId: string
-    order:number
-  }
+    id: number;
+    title: string;
+    boardId: string;
+    order: number;
+  };
 };
 
 const BoardColumn = async ({ title, column }: BoardColumnTypes) => {
   const handleIcon = (title: string) => {
     switch (title) {
       case "closed":
-        return <SquareX />
+        return <SquareX />;
       case "applied":
         return <AlarmClock />;
       case "interview":
@@ -33,26 +40,30 @@ const BoardColumn = async ({ title, column }: BoardColumnTypes) => {
     }
   };
 
-  const jobs = await getJobs(column.id)
+  const jobs = await getJobs(column.id);
 
   return (
     <div className="shrink-0 w-3/4 xl:w-full h-[83vh] bg-white pt-12 border border-gray-100 rounded-lg flex flex-col">
-      <div className="flex w-full justify-evenly items-center mb-4">
-        {handleIcon(title)}
-        <h2 className="uppercase font-semibold">{title}</h2>
+      <Suspense
+        fallback={<Skeleton className="h-10 bg-gray-100 w-5/6 mx-auto mb-4" />}
+      >
+        <div className="flex w-full justify-evenly items-center mb-4">
+          {handleIcon(title)}
+          <h2 className="uppercase font-semibold">{title}</h2>
 
-        <BtnActionColumn />
-      </div>
+          <BtnActionColumn />
+        </div>
+      </Suspense>
+
       <CreateJob />
       <SearchJobs />
       <div className="mt-4 flex flex-col items-center px-2 gap-4 flex-1 overflow-y-scroll overflow-x-hidden">
-      {        jobs && jobs.length > 0 ? (
-          jobs.map((job) => (
-            <JobCard key={job.id} job={job} />
-          ))
+        {jobs && jobs.length > 0 ? (
+          jobs.map((job) => <JobCard key={job.id} job={job} />)
         ) : (
           <p className="text-gray-500">No jobs available in this column.</p>
-        )}  
+        )}
+
       </div>
     </div>
   );
