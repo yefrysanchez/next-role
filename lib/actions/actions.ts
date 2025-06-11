@@ -3,6 +3,7 @@ import { auth } from "../auth";
 import { db } from "@/db/drizzle";
 import { boards } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { getSlug } from "../helpers";
 
 export const getBoards = async () => {
   "use server";
@@ -17,4 +18,19 @@ export const getBoards = async () => {
     .from(boards)
     .where(eq(boards.userId, session.user.id));
   return res;
+};
+
+export const getBoard = async (slug: string) => {
+  "use server";
+  const session = await auth.api.getSession({ headers: await headers() });
+
+  if (!session?.user.id) {
+    throw new Error("Unauthorized");
+  }
+  const res = await await getBoards();
+  const board = res.find((board) => getSlug(board.id, board.slug) === slug);
+  if (!board) {
+    return null;
+  }
+  return board;
 };
