@@ -16,6 +16,5 @@ export const getBoards = async () => {
     .select()
     .from(boards)
     .where(eq(boards.userId, session.user.id));
-  console.log(res);
   return res;
 };
