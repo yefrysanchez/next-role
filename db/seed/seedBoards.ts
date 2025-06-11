@@ -1,32 +1,47 @@
+import { db } from "@/db/drizzle";
+import { jobs, columns } from "@/db/schema";
+import { InferModel } from "drizzle-orm";
 
 
-import { db } from "@/db/drizzle"
-import { boards } from "@/db/schema"; 
-import { v4 as uuidv4 } from "uuid";
+type NewJob = InferModel<typeof jobs, "insert">;
+
+async function seedJobs() {
+
+  const allColumns = await db.select().from(columns);
 
 
-async function main() {
-  const userId = "aLMGTh0MW17oKKaMGZnVllHBEYp5PJXX"; // your test user
+  if (allColumns.length === 0) {
+    console.error("❌ No columns found. Please seed columns first.");
+    return;
+  }
 
-  await db.insert(boards).values([
+  const jobValues: NewJob[] = [
     {
-      id: uuidv4(),
-      title: "Tech Job Hunt",
-      slug: "tech-job-hunt",
-      userId,
+      title: "Frontend Developer",
+      company: "Acme Inc",
+      modality: "remote",
+      columnId: allColumns[0].id, // 👈 Make sure this ID exists
+      url: "https://acme.jobs/frontend",
+      salary: "$90,000",
+      description: "Work on React-based web apps.",
     },
     {
-      id: uuidv4(),
-      title: "Marketing Positions",
-      slug: "marketing-positions",
-      userId,
+      title: "Backend Engineer",
+      company: "Beta Corp",
+      modality: "hybrid",
+      columnId: allColumns[1]?.id ?? allColumns[0].id,
+      url: "https://beta.jobs/backend",
+      salary: "$100,000",
+      description: "Node.js and PostgreSQL backend development.",
     },
-  ]);
+  ];
 
-  console.log("✅ Seeded boards!");
+  await db.insert(jobs).values(jobValues);
+
+  console.log("✅ Seeded jobs!");
 }
 
-main().catch((err) => {
-  console.error(err);
+seedJobs().catch((err) => {
+  console.error("❌ Job seeding failed:", err);
   process.exit(1);
 });

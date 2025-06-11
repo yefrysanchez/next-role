@@ -14,7 +14,7 @@ import { relations } from "drizzle-orm";
 // Enums
 export const modalityEnum = pgEnum("modality", ["remote", "on_site", "hybrid"]);
 export const columnEnum = pgEnum("column_title", [
-  "rejected",
+  "closed",
   "applied",
   "interview",
   "offer",
@@ -95,11 +95,12 @@ export const boards = pgTable("boards", {
 export const columns = pgTable("columns", {
   id: serial("id").primaryKey(),
   title: columnEnum("title").notNull(),
-  boardId: integer("board_id")
+  boardId: uuid("board_id") // <-- FIXED
     .notNull()
     .references(() => boards.id),
   order: integer("order").notNull(),
 });
+
 
 // Jobs
 export const jobs = pgTable("jobs", {
