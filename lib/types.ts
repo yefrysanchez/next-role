@@ -10,16 +10,16 @@ export type SignUpTypes = {
   lastName: string;
 };
 
-export type JobModality = "Remote" | "Hybrid" | "On Site";
+export type JobModality = "remote" | "hybrid" | "on_site";
 
 export type Job = {
   id: number;
   company: string;
   title: string;
   modality: JobModality;
-  url?: string;
-  salary?: string;
-  description?: string;
+  url?: string | null | undefined;
+  salary?: string | null | undefined;
+  description?: string | null | undefined;
 };
 
 export type KanbanColumns = {

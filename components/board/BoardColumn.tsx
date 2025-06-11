@@ -5,14 +5,19 @@ import JobCard from "./JobCard";
 import BtnActionColumn from "./BtnActionColumn";
 import SearchJobs from "./SearchJobs";
 import CreateJob from "./CreateJob";
-import { Job } from "@/lib/types";
+import { getJobs } from "@/lib/actions/actions";
 
 type BoardColumnTypes = {
   title: string;
-  jobs?: Job[]
+  column: {
+    id: number
+    title: string
+    boardId: string
+    order:number
+  }
 };
 
-const BoardColumn = ({ title, jobs }: BoardColumnTypes) => {
+const BoardColumn = async ({ title, column }: BoardColumnTypes) => {
   const handleIcon = (title: string) => {
     switch (title) {
       case "closed":
@@ -28,6 +33,7 @@ const BoardColumn = ({ title, jobs }: BoardColumnTypes) => {
     }
   };
 
+  const jobs = await getJobs(column.id)
 
   return (
     <div className="shrink-0 w-3/4 xl:w-full h-[83vh] bg-white pt-12 border border-gray-100 rounded-lg flex flex-col">
