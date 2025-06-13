@@ -40,6 +40,10 @@ export const getBoard = async (slug: string) => {
   return board;
 };
 
+export const createBoard = async (title: string) => {
+  console.log(title)
+}
+
 // Columns Actions
 
 export const getColumns = async (boardId: string) => {
