@@ -1,0 +1,1 @@
+ALTER TABLE "boards" DROP COLUMN "created_at";

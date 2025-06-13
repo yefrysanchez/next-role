@@ -1,40 +1,34 @@
-import React from "react";
+import React, { Suspense } from "react";
 import {
   AlarmClock,
   Columns3Cog,
   Handshake,
   Phone,
-  Plus,
-  Star,
+  SquareX,
 } from "lucide-react";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 
-
-
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { Textarea } from "../ui/textarea";
 import JobCard from "./JobCard";
 import BtnActionColumn from "./BtnActionColumn";
 import SearchJobs from "./SearchJobs";
+import CreateJob from "./CreateJob";
+import { getJobs } from "@/lib/actions/actions";
+import { Skeleton } from "../ui/skeleton";
 
 type BoardColumnTypes = {
   title: string;
+  column: {
+    id: number;
+    title: string;
+    boardId: string;
+    order: number;
+  };
 };
 
-const BoardColumn = ({ title }: BoardColumnTypes) => {
+const BoardColumn = async ({ title, column }: BoardColumnTypes) => {
   const handleIcon = (title: string) => {
     switch (title) {
-      case "wishlist":
-        return <Star />;
+      case "closed":
+        return <SquareX />;
       case "applied":
         return <AlarmClock />;
       case "interview":
@@ -46,94 +40,30 @@ const BoardColumn = ({ title }: BoardColumnTypes) => {
     }
   };
 
-  const jobs = [1,2,3,4,5,6,7,8,9,10,11]
+  const jobs = await getJobs(column.id);
 
   return (
-    <div className="shrink-0 w-3/4 lg:w-full lg:h-full max-h-[85vh] bg-white pt-12 border border-gray-100 rounded-lg flex flex-col">
-      <div className="flex w-full justify-evenly items-center mb-4">
-        {handleIcon(title)}
-        <h2 className="uppercase font-semibold">{title}</h2>
+    <div className="shrink-0 w-3/4 xl:w-full h-[83vh] bg-white pt-12 border border-gray-100 rounded-lg flex flex-col">
+      <Suspense
+        fallback={<Skeleton className="h-10 bg-gray-100 w-5/6 mx-auto mb-4" />}
+      >
+        <div className="flex w-full justify-evenly items-center mb-4">
+          {handleIcon(title)}
+          <h2 className="uppercase font-semibold">{title}</h2>
 
-        <BtnActionColumn />
-      </div>
-      <Dialog>
-        <DialogTrigger className="w-full px-2">
-          <div className="flex w-full justify-center bg-gray-50 hover:bg-gray-100 cursor-pointer p-2 rounded-lg">
-            <Plus size={30} />
-          </div>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="text-2xl">Add Job</DialogTitle>
-          </DialogHeader>
-          <form className="grid gap-4">
-            <label htmlFor="company">
-              <span className="font-bold text-xs">Company *</span>
-              <Input
-                id="company"
-                required
-                placeholder="e.g. Google, Apple, Meta"
-                type="text"
-                name="company"
-              />
-            </label>
-            <label htmlFor="job-title">
-              <span className="font-bold text-xs">Job Title *</span>
-              <Input
-                id="job-title"
-                required
-                placeholder="e.g. Software Engineer, Sales Engineer"
-                type="text"
-                name="job-title"
-              />
-            </label>
-            <label htmlFor="job-url">
-              <span className="font-bold text-xs">Job Posting URL</span>
-              <Input
-                id="job-url"
-                placeholder="https://jobpost.com/yourjob"
-                type="text"
-                name="job-url"
-              />
-            </label>
-            <label htmlFor="salary">
-              <span className="font-bold text-xs">Salary (if available)</span>
-              <Input
-                id="salary"
-                placeholder="e.g. $70,000 - $90,000"
-                type="text"
-                name="salary"
-              />
-            </label>
+          <BtnActionColumn />
+        </div>
+      </Suspense>
 
-            <label htmlFor="description">
-              <span className="font-bold text-xs">Job Description</span>
-              <Textarea />
-            </label>
-
-            <div className="flex gap-4 justify-end">
-              <DialogFooter className="sm:justify-end">
-                <DialogClose asChild>
-                  <Button type="button" variant="secondary">
-                    Close
-                  </Button>
-                </DialogClose>
-              </DialogFooter>
-              <Button className="min-w-[100px]" type="submit">
-                Add
-              </Button>
-            </div>
-          </form>
-        </DialogContent>
-      </Dialog>
+      <CreateJob />
       <SearchJobs />
       <div className="mt-4 flex flex-col items-center px-2 gap-4 flex-1 overflow-y-scroll overflow-x-hidden">
-        
-        {
-          jobs.map(job => (
-            <JobCard key={job} />
-          ))
-        }
+        {jobs && jobs.length > 0 ? (
+          jobs.map((job) => <JobCard key={job.id} job={job} />)
+        ) : (
+          <p className="text-gray-500">No jobs available in this column.</p>
+        )}
+
       </div>
     </div>
   );
