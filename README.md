@@ -25,10 +25,10 @@
 
 ## 📦 Tech Stack
 
-- **Frontend:** [Next.js](https://nextjs.org/), [React](https://reactjs.org/), [Tailwind CSS](https://tailwindcss.com/)
-- **Backend:** [Next.js API Routes] or [Node.js + Express] (TBD)
-- **Auth:** [NextAuth.js](https://next-auth.js.org/) or [Clerk.dev](https://clerk.dev/) (TBD)
-- **Database:** [PostgreSQL](https://www.postgresql.org/) + [Prisma](https://www.prisma.io/) (or MongoDB + Mongoose) (TBD)
+- **Frontend:** [Next.js](https://nextjs.org/), [React](https://reactjs.org/), [Tailwind CSS](https://tailwindcss.com/), [Shadcn UI](https://ui.shadcn.com/)
+- **Backend:** [Next.js API Routes]
+- **Auth:** [BetterAuth](https://www.better-auth.com/)
+- **Database:** [PostgreSQL](https://www.postgresql.org/) + [Neon Serverless](https://neon.com/)
 - **Drag & Drop:** [@dnd-kit](https://dndkit.com/)
 - **Deployment:** [Vercel](https://vercel.com/) + [Railway](https://railway.app/) or [Render](https://render.com/) (TBD)
 
