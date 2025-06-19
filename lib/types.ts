@@ -34,3 +34,9 @@ export type ColumnsTypes = {
   order: number;
   jobs: Job[];
 };
+
+export type CreateBoardTypes = {
+  id: string,
+  title: string,
+  userId: string
+}

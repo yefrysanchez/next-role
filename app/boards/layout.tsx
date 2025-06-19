@@ -2,6 +2,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@radix-ui/react-separator";
 import React from "react";
+import { Toaster } from "sonner";
 
 type AppLayoutProps = {
   children: React.ReactNode;
@@ -10,6 +11,7 @@ type AppLayoutProps = {
 const AppLayout = ({ children }: AppLayoutProps) => {
   return (
     <SidebarProvider>
+      <Toaster />
       <AppSidebar />
       <SidebarInset className="relative flex flex-col">
         <header className="flex fixed top-0 h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
