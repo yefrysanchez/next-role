@@ -16,6 +16,7 @@ const Page = async () => {
             key={i}
             title={board.title}
             url={`/boards/${getSlug(board.id, board.slug)}`}
+            id={board.id}
           />
         ))}
       </section>
