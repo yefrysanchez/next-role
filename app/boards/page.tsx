@@ -9,7 +9,7 @@ const Page = async () => {
   return (
     <div className="pt-16 px-4">
       <h1 className="font-bold tracking-tighter text-4xl">Boards Hub</h1>
-      <section className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3 max-w-3xl">
+      <section className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:max-w-3xl">
         <CreateBoard />
         {boards.map((board, i) => (
           <BoardCard
