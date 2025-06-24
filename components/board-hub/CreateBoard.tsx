@@ -19,21 +19,28 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import Spinner from "../Spinner";
 import { v4 as uuidv4 } from "uuid";
+import { useRouter } from "next/navigation";
 config({ path: ".env" });
 
 const CreateBoard = () => {
   const [isloading, setIsloading] = useState(false);
   const [title, setTitle] = useState("");
+  const [open, setOpen] = useState(false);
 
   const { data: session } = authClient.useSession();
 
-  // const url = process.env.BASE_URL as string;
+  const router = useRouter();
+
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const handleCreateBoard = async () => {
     setIsloading(true);
     try {
-      const res = await fetch(`http://localhost:3000/api/boards`, {
+      const res = await fetch(`${apiUrl}/boards`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           title,
           id: uuidv4(),
@@ -43,19 +50,20 @@ const CreateBoard = () => {
       if (!res) {
         throw new Error("Error creating board, Please try later.");
       }
+      setOpen(false);
       toast(`${title} board was created successfully.`);
     } catch (error) {
       console.error("Error creating board:", error);
       setIsloading(false);
       toast.error("An error occurred while creating the board.");
-      
     } finally {
+      router.refresh();
       setIsloading(false);
     }
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <div className="flex flex-col min-h-[210px] h-full gap-4 justify-center items-center bg-gray-100 p-8 rounded-2xl hover:bg-gray-200 cursor-pointer">
           <h3 className="font-semibold text-2xl text-center">

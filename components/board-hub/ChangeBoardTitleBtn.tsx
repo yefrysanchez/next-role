@@ -15,6 +15,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Input } from "../ui/input";
 import Spinner from "../Spinner";
+import { useRouter } from "next/navigation";
 
 type ChangeBoardTitleBtnTypes = {
   id: string;
@@ -24,17 +25,22 @@ type ChangeBoardTitleBtnTypes = {
 const ChangeBoardTitleBtn = ({ id, title }: ChangeBoardTitleBtnTypes) => {
   const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/boards`;
   const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const [newTitle, setNewTitle] = useState(title);
+
+  const router = useRouter();
 
   const handleTitleChange = async () => {
     setIsLoading(true);
     if (newTitle === title) {
       toast.error("Title is not changed.");
+      setIsLoading(false);
       return;
     }
     if (newTitle === "") {
       toast.error("Title can't be empty.");
+      setIsLoading(false);
       return;
     }
 
@@ -50,7 +56,8 @@ const ChangeBoardTitleBtn = ({ id, title }: ChangeBoardTitleBtnTypes) => {
         setIsLoading(false);
         toast.error("An error have occured. Please try later.");
       }
-      console.log(res)
+      setOpen(false);
+      toast.success("Board's title changed successfully.");
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error("An error occurred:", error.message);
@@ -58,12 +65,14 @@ const ChangeBoardTitleBtn = ({ id, title }: ChangeBoardTitleBtnTypes) => {
         console.error("An unknown error occurred:", error);
       }
     } finally {
+      router.refresh();
+
       setIsLoading(false);
     }
   };
 
   return (
-    <Dialog>
+    <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger>
         <div className="flex justify-center items-center border h-full w-10 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
           <Pencil size={15} />
@@ -75,7 +84,7 @@ const ChangeBoardTitleBtn = ({ id, title }: ChangeBoardTitleBtnTypes) => {
         </DialogHeader>
         <form className="grid gap-4">
           <Input
-            value={newTitle} 
+            value={newTitle}
             onChange={(e) => setNewTitle(e.target.value)}
             placeholder="Board Title"
             type="text"

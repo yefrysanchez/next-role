@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { config } from "dotenv";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 config();
 type DeleteBoardBtnType = {
@@ -23,7 +24,11 @@ type DeleteBoardBtnType = {
 
 const DeleteBoardBtn = ({ id }: DeleteBoardBtnType) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+
   const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/boards`;
+
+  const router = useRouter();
 
   const handleDelete = async () => {
     setIsLoading(true);
@@ -38,14 +43,19 @@ const DeleteBoardBtn = ({ id }: DeleteBoardBtnType) => {
         toast.error("An error have occured. Please try later.");
       }
 
-      toast.success("Board have been deleted.")
+      toast.success("Board has been deleted.");
+      setOpen(false);
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
+    } finally {
+      router.refresh();
+      setIsLoading(false);
     }
   };
 
   return (
-    <AlertDialog>
+    <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button className="cursor-pointer bg-red-100 hover:bg-red-400 text-black">
           <Trash />
