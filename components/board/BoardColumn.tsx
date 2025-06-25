@@ -55,7 +55,7 @@ const BoardColumn = async ({ title, column }: BoardColumnTypes) => {
         </div>
       </Suspense>
 
-      <CreateJob />
+      <CreateJob columnId={column.id} />
       <SearchJobs />
       <div className="mt-4 flex flex-col items-center px-2 gap-4 flex-1 overflow-y-scroll overflow-x-hidden">
         {jobs && jobs.length > 0 ? (

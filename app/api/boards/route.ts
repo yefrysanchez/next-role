@@ -64,14 +64,14 @@ export async function POST(req: NextRequest) {
       )
     );
 
-    // ✅ Success response - use NextResponse for App Router
+    // ✅ Success response 
     return NextResponse.json(
       { message: "New board created successfully." },
       { status: 201 }
     );
   } catch (error) {
     console.error("Error creating board:", error);
-    // Error response - use NextResponse for App Router
+    // Error response 
     return NextResponse.json(
       { error: "An error occurred while creating the board." },
       { status: 500 }
@@ -134,7 +134,7 @@ export async function DELETE(req: NextRequest) {
     await db.delete(columns).where(eq(columns.boardId, id));
     await db.delete(boards).where(eq(boards.id, id));
 
-    NextResponse.json({ message: "Board have been deleted." });
+    NextResponse.json({ message: "Board has been deleted." });
   } catch (error) {
     console.error("Error deleting board:", error);
     return NextResponse.json(

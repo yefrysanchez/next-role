@@ -10,7 +10,7 @@ export type SignUpTypes = {
   lastName: string;
 };
 
-export type JobModality = "remote" | "hybrid" | "on_site";
+export type JobModality = "remote" | "on_site" | "hybrid";
 
 export type Job = {
   id: number;
@@ -36,7 +36,7 @@ export type ColumnsTypes = {
 };
 
 export type CreateBoardTypes = {
-  id: string,
-  title: string,
-  userId: string
-}
+  id: string;
+  title: string;
+  userId: string;
+};
