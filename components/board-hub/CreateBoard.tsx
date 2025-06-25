@@ -20,6 +20,7 @@ import { Input } from "../ui/input";
 import Spinner from "../Spinner";
 import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/navigation";
+import { getSlug } from "@/lib/helpers";
 config({ path: ".env" });
 
 const CreateBoard = () => {
@@ -35,6 +36,7 @@ const CreateBoard = () => {
 
   const handleCreateBoard = async () => {
     setIsloading(true);
+    const id = uuidv4();
     try {
       const res = await fetch(`${apiUrl}/boards`, {
         method: "POST",
@@ -43,8 +45,9 @@ const CreateBoard = () => {
         },
         body: JSON.stringify({
           title,
-          id: uuidv4(),
+          id,
           userId: session?.user.id,
+          slug: getSlug(id, title),
         }),
       });
       if (!res) {

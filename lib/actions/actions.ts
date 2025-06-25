@@ -33,7 +33,7 @@ export const getBoard = async (slug: string) => {
      redirect("/login")
   }
   const res = await getBoards();
-  const board = res.find((board) => getSlug(board.id, board.slug) === slug);
+  const board = res.find((board) => getSlug(board.id, board.title) === slug);
   if (!board) {
     return null;
   }

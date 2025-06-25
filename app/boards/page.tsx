@@ -15,7 +15,7 @@ const Page = async () => {
           <BoardCard
             key={i}
             title={board.title}
-            url={`/boards/${getSlug(board.id, board.slug)}`}
+            url={`/boards/${getSlug(board.id, board.title)}`}
             id={board.id}
           />
         ))}

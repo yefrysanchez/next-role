@@ -39,4 +39,5 @@ export type CreateBoardTypes = {
   id: string;
   title: string;
   userId: string;
+  slug: string
 };

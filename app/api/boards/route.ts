@@ -4,7 +4,6 @@ import { db } from "@/db/drizzle";
 
 import { CreateBoardTypes } from "@/lib/types";
 import { getColumnsStructure } from "@/lib/utils";
-import slugify from "slugify";
 import { eq } from "drizzle-orm";
 
 // export async function GET() {
@@ -15,7 +14,7 @@ import { eq } from "drizzle-orm";
 
 export async function POST(req: NextRequest) {
   // Read the JSON body using req.json()
-  const { title, id, userId }: CreateBoardTypes = await req.json();
+  const { title, id, userId, slug }: CreateBoardTypes = await req.json();
 
   // --- Add validation here (recommended) ---
   if (typeof title !== "string" || !title.trim()) {
@@ -43,8 +42,7 @@ export async function POST(req: NextRequest) {
   const newBoard = {
     id,
     title,
-    // This line will now work correctly as 'title' will be a string
-    slug: `${id}-${slugify(title, { lower: true, strict: true })}`,
+    slug,
     userId,
   };
 
