@@ -1,17 +1,6 @@
 "use client";
-import { ArrowRightLeft, ExternalLink, Trash2 } from "lucide-react";
+import { ArrowRightLeft, ExternalLink } from "lucide-react";
 import React from "react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 
 import {
   DropdownMenu,
@@ -25,9 +14,10 @@ import JobDetails from "./JobDetails";
 import { Badge } from "../ui/badge";
 import { Job } from "@/lib/types";
 import { toast } from "sonner";
+import DeleteJob from "./DeleteJob";
 
 type JobCardProps = {
-  job?: Job;
+  job: Job;
 };
 
 const JobCard = ({ job }: JobCardProps) => {
@@ -47,6 +37,10 @@ const JobCard = ({ job }: JobCardProps) => {
     return url.startsWith("http://") || url.startsWith("https://")
       ? url
       : `https://${url}`;
+
+    // If job.url is "www.google.com", it becomes "https://www.google.com" and opens as an aboslute URL not a relative one.
+
+    // If it's already a full URL, like "https://jobs.example.com", it’s used as-is.
   };
 
   return (
@@ -89,31 +83,7 @@ const JobCard = ({ job }: JobCardProps) => {
           </button>
         )}
 
-        <AlertDialog>
-          <AlertDialogTrigger>
-            <div
-              className="text-red-500 bg-gray-100 hover:bg-red-100 p-1 rounded-sm cursor-pointer "
-              role="button"
-            >
-              <Trash2 size={15} />
-            </div>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction className="text-red-500 bg-red-50 hover:bg-red-100 px-8">
-                Delete
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        <DeleteJob job={job} />
       </div>
 
       <DropdownMenu>

@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
 
 // Edit Job
 
-export async function Patch(req: NextRequest) {
+export async function PATCH(req: NextRequest) {
   const {
     id,
     columnId,
@@ -110,7 +110,7 @@ export async function Patch(req: NextRequest) {
 }
 
 // Delete Job
-export async function Delete(req: NextRequest) {
+export async function DELETE(req: NextRequest) {
   const { id }: { id: number } = await req.json();
 
   try {
