@@ -15,7 +15,7 @@ type Job = {
   company: string;
   jobTitle: string;
   modality: JobModality;
-  url?: string | null | undefined;
+  jobUrl?: string | null | undefined;
   salary?: string | null | undefined;
   description?: string | null | undefined;
 };
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     company,
     jobTitle,
     modality,
-    url,
+    jobUrl,
     salary,
     description,
   }: Job = await req.json();
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
     company,
     title: jobTitle,
     modality,
-    url,
+    url: jobUrl || null,
     salary,
     description,
   };
@@ -66,7 +66,7 @@ export async function Patch(req: NextRequest) {
     company,
     jobTitle,
     modality,
-    url,
+    jobUrl,
     salary,
     description,
   }: Job = await req.json();
@@ -77,7 +77,7 @@ export async function Patch(req: NextRequest) {
     company,
     title: jobTitle,
     modality,
-    url,
+    url: jobUrl || null,
     salary,
     description,
   };

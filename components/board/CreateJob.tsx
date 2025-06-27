@@ -24,6 +24,8 @@ import {
 } from "../ui/select";
 import { FormEvent, useState } from "react";
 import Spinner from "../Spinner";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 type CreateJobTypes = {
   columnId: number;
@@ -32,7 +34,9 @@ type CreateJobTypes = {
 const CreateJob = ({ columnId }: CreateJobTypes) => {
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const [error, setError] = useState<string | null>("Please complete the required fields.");
+  const [error, setError] = useState<string | null>(null);
+
+  const router = useRouter();
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -48,17 +52,32 @@ const CreateJob = ({ columnId }: CreateJobTypes) => {
       jobUrl: formData.get("job-url")?.toString() || "",
       salary: formData.get("salary")?.toString() || "",
       description: formData.get("description")?.toString() || "",
+      columnId,
     };
 
     setIsLoading(true);
+    setError(null);
 
     try {
-      // your async logic here
+      const res = await fetch(`${apiUrl}/boards/job`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) {
+        const errorRes = await res.json();
+        setError(errorRes.message || "Failed to create job");
+      }
+      const result = await res.json();
+      toast.success(result.message || "Job created successfully!");
     } catch (error) {
       console.error("Form submission error:", error);
-      // optional: display a toast or message
+      toast.error("Failed to create job. Please try again.");
     } finally {
       setIsLoading(false);
+      router.refresh();
       setOpen(false);
     }
   };
@@ -74,9 +93,7 @@ const CreateJob = ({ columnId }: CreateJobTypes) => {
         <DialogHeader>
           <DialogTitle className="text-2xl">Add Job</DialogTitle>
         </DialogHeader>
-        <p className="text-red-500 text-sm text-center">
-          {error && error}
-        </p>
+        <p className="text-red-500 text-sm text-center">{error && error}</p>
         <form onSubmit={handleCreate} className="grid gap-4">
           <label htmlFor="company">
             <span className="font-bold text-xs">Company *</span>
