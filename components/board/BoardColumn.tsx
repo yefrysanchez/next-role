@@ -42,6 +42,8 @@ const BoardColumn = async ({ title, column }: BoardColumnTypes) => {
 
   const jobs = await getJobs(column.id);
 
+  console.log(jobs);
+
   return (
     <div className="shrink-0 w-3/4 xl:w-full h-[83vh] bg-white pt-12 border border-gray-100 rounded-lg flex flex-col">
       <Suspense
@@ -63,7 +65,6 @@ const BoardColumn = async ({ title, column }: BoardColumnTypes) => {
         ) : (
           <p className="text-gray-500">No jobs available in this column.</p>
         )}
-
       </div>
     </div>
   );

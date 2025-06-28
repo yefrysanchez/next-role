@@ -20,6 +20,7 @@ export type Job = {
   url?: string | null | undefined;
   salary?: string | null | undefined;
   description?: string | null | undefined;
+  createdAt?: Date | null
 };
 
 export type KanbanColumns = {

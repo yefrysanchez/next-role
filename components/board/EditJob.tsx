@@ -146,7 +146,7 @@ const EditJob = ({ job }: EditJobProps) => {
             />
           </label>
           <label htmlFor="modality" className="text-xs">
-            <span className="font-bold">Job Modality</span>
+            <span className="font-bold">Job Modality *</span>
             <Select
               value={modality}
               onValueChange={handleModalityChange}

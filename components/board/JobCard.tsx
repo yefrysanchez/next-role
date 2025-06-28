@@ -1,5 +1,5 @@
 "use client";
-import { ArrowRightLeft, ExternalLink } from "lucide-react";
+import { ArrowRightLeft, ExternalLink, Eye } from "lucide-react";
 import React from "react";
 
 import {
@@ -16,6 +16,7 @@ import { Job } from "@/lib/types";
 import { toast } from "sonner";
 import DeleteJob from "./DeleteJob";
 import EditJob from "./EditJob";
+import { getFormattedUrl } from "@/lib/helpers";
 
 type JobCardProps = {
   job: Job;
@@ -33,21 +34,12 @@ const JobCard = ({ job }: JobCardProps) => {
     }
   };
 
-  const getFormattedUrl = (url: string) => {
-    if (!url) return "";
-    return url.startsWith("http://") || url.startsWith("https://")
-      ? url
-      : `https://${url}`;
 
-    // If job.url is "www.google.com", it becomes "https://www.google.com" and opens as an aboslute URL not a relative one.
-
-    // If it's already a full URL, like "https://jobs.example.com", it’s used as-is.
-  };
 
   return (
-    <div className="bg-gray-50  w-full p-4 rounded-md grid gap-1 mx-2 pb-8 group relative hover:bg-gray-100 cursor-grab active:cursor-grabbing active:opacity-65">
+    <div className="bg-gray-50 group:  w-full p-4 rounded-md grid gap-1 mx-2 pb-8 group relative hover:bg-gray-100 cursor-grab active:cursor-grabbing active:opacity-65">
       <JobDetails job={job}>
-        <h3 className="text-sm font-semibold">{job?.title}</h3>
+        <h3 className="text-sm font-semibold flex items-center gap-2"><span>{job?.title}</span> <span className=" text-gray-400 transition-opacity duration-200 xl:opacity-0 group-hover:opacity-100"><Eye size={15} /></span></h3>
         <p className="text-xs font-medium text-muted-foreground">
           {job?.company}
         </p>
@@ -60,7 +52,7 @@ const JobCard = ({ job }: JobCardProps) => {
           {handleModality(job?.modality || "Unknown Location")}
         </span>
       </Badge>
-      <div className="xl:hidden gap-1 flex group-hover:flex absolute right-2 bottom-2">
+      <div className="xl:opacity-0 gap-1 group-hover:opacity-100 flex absolute right-2 bottom-2 transition-opacity duration-200">
         {job?.url ? (
           <a
             href={getFormattedUrl(job.url)}

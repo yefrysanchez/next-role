@@ -21,4 +21,17 @@ export const getLucideIcon = (iconName: LucideIconNames) => {
 };
 
 // Create an array of icon names
- export const iconNames: LucideIconNames[] = Object.keys(LucideIcons) as LucideIconNames[];
+export const iconNames: LucideIconNames[] = Object.keys(
+  LucideIcons
+) as LucideIconNames[];
+
+export const getFormattedUrl = (url: string) => {
+  if (!url) return "";
+  return url.startsWith("http://") || url.startsWith("https://")
+    ? url
+    : `https://${url}`;
+
+  // If job.url is "www.google.com", it becomes "https://www.google.com" and opens as an aboslute URL not a relative one.
+
+  // If it's already a full URL, like "https://jobs.example.com", it’s used as-is.
+};
