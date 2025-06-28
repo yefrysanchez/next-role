@@ -7,7 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Ellipsis, Pencil, Trash2 } from "lucide-react";
+import { Ellipsis, Pencil, Star, Trash2 } from "lucide-react";
 
 import {
   AlertDialog,
@@ -31,6 +31,8 @@ import {
 import { Input } from "../ui/input";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Button } from "../ui/button";
+import IconPicker from "./IconPicker";
+import { useState } from "react";
 
 const BtnActionColumn = () => {
   const handleDelete = () => {
@@ -38,8 +40,11 @@ const BtnActionColumn = () => {
     // Your delete logic here
   };
 
+  const [iconOpen, setIconOpen] = useState(false);
+  
+
   return (
-    <DropdownMenu>
+    <DropdownMenu >
       <DropdownMenuTrigger>
         <div
           role="button"
@@ -56,7 +61,6 @@ const BtnActionColumn = () => {
         <div
           role="button"
           className="w-full flex items-center px-2 py-2 text-sm hover:bg-gray-100"
-          onClick={() => console.log("Edit")}
         >
           <Dialog>
             <DialogTrigger className="flex items-center">
@@ -86,6 +90,28 @@ const BtnActionColumn = () => {
           </Dialog>
         </div>
 
+        <div
+          role="button"
+          className="w-full flex items-center px-2 py-2 text-sm hover:bg-gray-100"
+        >
+          <Dialog open={iconOpen} onOpenChange={setIconOpen}>
+            <DialogTrigger className="flex items-center">
+              <Star size={15} className="mr-2" />
+              <span>Change Icon</span>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Choose an Icon</DialogTitle>
+                <p className="text-sm text-gray-500">
+                  Select from available icons
+                </p>
+              </DialogHeader>
+
+              <IconPicker setIconOpen={setIconOpen}/>
+            </DialogContent>
+          </Dialog>
+        </div>
+
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <button className="w-full flex items-center text-red-600 px-2 py-2 text-sm hover:bg-gray-100">
@@ -97,8 +123,8 @@ const BtnActionColumn = () => {
             <AlertDialogHeader>
               <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
               <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
+                This action cannot be undone. This will permanently delete this
+                column from your account.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>

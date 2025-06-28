@@ -8,11 +8,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
-import { Plus } from "lucide-react";
+import { Pencil } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -22,62 +21,89 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { FormEvent, useState } from "react";
+
+import { Job } from "@/lib/types";
+import React, { FormEvent, useState } from "react";
 import Spinner from "../Spinner";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-type CreateJobTypes = {
-  columnId: number;
+type EditJobProps = {
+  job: Job;
 };
 
-const CreateJob = ({ columnId }: CreateJobTypes) => {
-  const [isLoading, setIsLoading] = useState(false);
+const EditJob = ({ job }: EditJobProps) => {
   const [open, setOpen] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<null | string>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Local state for form inputs
+  const [company, setCompany] = useState(job.company);
+  const [title, setTitle] = useState(job.title);
+  const [modality, setModality] = useState<"on_site" | "remote" | "hybrid">(
+    job.modality
+  );
+  const [url, setUrl] = useState(job.url || "");
+  const [salary, setSalary] = useState(job.salary || "");
+  const [description, setDescription] = useState(job.description || "");
 
   const router = useRouter();
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  const handleCreate = async (e: FormEvent<HTMLFormElement>) => {
+  const handleModalityChange = (value: string) => {
+    if (value === "on_site" || value === "remote" || value === "hybrid") {
+      setModality(value);
+    }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setError(null);
+    setIsLoading(false);
+    // Reset form fields to initial job values
+    setCompany(job.company);
+    setTitle(job.title);
+    setModality(job.modality);
+    setUrl(job.url || "");
+    setSalary(job.salary || "");
+    setDescription(job.description || "");
+  };
+
+  const handleEdit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const formData = new FormData(e.currentTarget);
-
-    const data = {
-      company: formData.get("company")?.toString().trim() || "",
-      jobTitle: formData.get("job-title")?.toString().trim() || "",
-      modality: formData.get("modality")?.toString() || "",
-      jobUrl: formData.get("job-url")?.toString() || "",
-      salary: formData.get("salary")?.toString() || "",
-      description: formData.get("description")?.toString() || "",
-      columnId,
-    };
-
     setIsLoading(true);
     setError(null);
 
     try {
       const res = await fetch(`${apiUrl}/boards/job`, {
-        method: "POST",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          id: job.id,
+          company,
+          jobTitle: title,
+          modality,
+          jobUrl: url,
+          salary,
+          description,
+        }),
       });
+
       if (!res.ok) {
-        const errorRes = await res.json();
-        setError(errorRes.message || "Failed to create job");
+        throw new Error("Failed to update job.");
       }
-      const result = await res.json();
-      toast.success(result.message || "Job created successfully!");
-    } catch (error) {
-      console.error("Form submission error:", error);
-      toast.error("Failed to create job. Please try again.");
+      const data = await res.json();
+      toast.success(data || "Job updated successfully!")
+    } catch (error: unknown) {
+      console.error("Error editing job:", error);
+
+      toast.error("Failed to edit Job. Please try again.");
     } finally {
+      router.refresh(); // Refresh the page to reflect changes
       setIsLoading(false);
-      router.refresh();
       setOpen(false);
     }
   };
@@ -85,19 +111,21 @@ const CreateJob = ({ columnId }: CreateJobTypes) => {
   return (
     <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger className="w-full px-2">
-        <div className="flex w-full justify-center bg-gray-50 hover:bg-gray-100 cursor-pointer p-2 rounded-lg">
-          <Plus size={30} />
+        <div className="bg-gray-100 hover:bg-blue-100 p-1 rounded-sm cursor-pointer">
+          <Pencil size={15} />
         </div>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-2xl">Add Job</DialogTitle>
+          <DialogTitle className="text-2xl">Edit Job</DialogTitle>
         </DialogHeader>
-        <p className="text-red-500 text-sm text-center">{error && error}</p>
-        <form onSubmit={handleCreate} className="grid gap-4">
+        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+        <form onSubmit={handleEdit} className="grid gap-4">
           <label htmlFor="company">
             <span className="font-bold text-xs">Company *</span>
             <Input
+              value={company}
+              onChange={(e) => setCompany(e.target.value)}
               id="company"
               required
               placeholder="e.g. Google, Apple, Meta"
@@ -108,6 +136,8 @@ const CreateJob = ({ columnId }: CreateJobTypes) => {
           <label htmlFor="job-title">
             <span className="font-bold text-xs">Job Title *</span>
             <Input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               id="job-title"
               required
               placeholder="e.g. Software Engineer, Sales Engineer"
@@ -115,14 +145,15 @@ const CreateJob = ({ columnId }: CreateJobTypes) => {
               name="job-title"
             />
           </label>
-          <label htmlFor="" className=" text-xs">
-            <span className="font-bold">Job Modality</span>
-            <Select name="modality" required>
+          <label htmlFor="modality" className="text-xs">
+            <span className="font-bold">Job Modality *</span>
+            <Select
+              value={modality}
+              onValueChange={handleModalityChange}
+              required
+            >
               <SelectTrigger className="w-full">
-                <SelectValue
-                  className="placeholder:font-normal"
-                  placeholder="Select Working Place"
-                />
+                <SelectValue placeholder="Select Working Place" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup className="w-full">
@@ -134,10 +165,11 @@ const CreateJob = ({ columnId }: CreateJobTypes) => {
               </SelectContent>
             </Select>
           </label>
-
           <label htmlFor="job-url">
             <span className="font-bold text-xs">Job Posting URL</span>
             <Input
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
               id="job-url"
               placeholder="https://jobpost.com/yourjob"
               type="text"
@@ -147,22 +179,33 @@ const CreateJob = ({ columnId }: CreateJobTypes) => {
           <label htmlFor="salary">
             <span className="font-bold text-xs">Salary (if available)</span>
             <Input
+              value={salary}
+              onChange={(e) => setSalary(e.target.value)}
               id="salary"
               placeholder="e.g. $70,000 - $90,000"
               type="text"
               name="salary"
             />
           </label>
-
           <label htmlFor="description">
             <span className="font-bold text-xs">Job Description</span>
-            <Textarea name="description" />
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              name="description"
+              className="min-h-[200px]"
+            />
           </label>
 
           <div className="flex gap-4 justify-end">
             <DialogFooter className="sm:justify-end">
               <DialogClose asChild>
-                <Button disabled={isLoading} type="button" variant="secondary">
+                <Button
+                  onClick={handleClose}
+                  disabled={isLoading}
+                  type="button"
+                  variant="secondary"
+                >
                   Close
                 </Button>
               </DialogClose>
@@ -172,7 +215,7 @@ const CreateJob = ({ columnId }: CreateJobTypes) => {
               className="min-w-[100px]"
               type="submit"
             >
-              {isLoading ? <Spinner /> : "Add Job"}
+              {isLoading ? <Spinner /> : "Edit Job"}
             </Button>
           </div>
         </form>
@@ -181,4 +224,4 @@ const CreateJob = ({ columnId }: CreateJobTypes) => {
   );
 };
 
-export default CreateJob;
+export default EditJob;

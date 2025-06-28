@@ -1,16 +1,6 @@
-import { ArrowRightLeft, ExternalLink, Trash2 } from "lucide-react";
+"use client";
+import { ArrowRightLeft, ExternalLink, Eye } from "lucide-react";
 import React from "react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 
 import {
   DropdownMenu,
@@ -23,9 +13,13 @@ import {
 import JobDetails from "./JobDetails";
 import { Badge } from "../ui/badge";
 import { Job } from "@/lib/types";
+import { toast } from "sonner";
+import DeleteJob from "./DeleteJob";
+import EditJob from "./EditJob";
+import { getFormattedUrl } from "@/lib/helpers";
 
 type JobCardProps = {
-  job?: Job;
+  job: Job;
 };
 
 const JobCard = ({ job }: JobCardProps) => {
@@ -40,15 +34,17 @@ const JobCard = ({ job }: JobCardProps) => {
     }
   };
 
+
+
   return (
-    <div className="bg-gray-50  w-full p-4 rounded-md grid gap-1 mx-2 pb-8 group relative hover:bg-gray-100 cursor-grab active:cursor-grabbing active:opacity-65">
-      <JobDetails job = {job}>
-        <h3 className="text-sm font-semibold">{job?.title}</h3>
+    <div className="bg-gray-50 group:  w-full p-4 rounded-md grid gap-1 mx-2 pb-8 group relative hover:bg-gray-100 cursor-grab active:cursor-grabbing active:opacity-65">
+      <JobDetails job={job}>
+        <h3 className="text-sm font-semibold flex items-center gap-2"><span>{job?.title}</span> <span className=" text-gray-400 transition-opacity duration-200 xl:opacity-0 group-hover:opacity-100"><Eye size={15} /></span></h3>
         <p className="text-xs font-medium text-muted-foreground">
           {job?.company}
         </p>
         <p className="text-green-600 text-xs">
-          {job?.salary ? job?.salary : ""}
+          {job?.salary ? `$ ${job?.salary}` : ""}
         </p>
       </JobDetails>
       <Badge variant="outline">
@@ -56,41 +52,32 @@ const JobCard = ({ job }: JobCardProps) => {
           {handleModality(job?.modality || "Unknown Location")}
         </span>
       </Badge>
-      <div className="xl:hidden gap-1 flex group-hover:flex absolute right-2 bottom-2">
-        <a
-          href={job?.url || "#"}
-          target="_blank"
-          rel="noopener noreferrer"
-          className=" bg-gray-100 hover:bg-blue-100 p-1 rounded-sm cursor-pointer"
-        >
-          <ExternalLink size={15} />
-        </a>
+      <div className="xl:opacity-0 gap-1 group-hover:opacity-100 flex absolute right-2 bottom-2 transition-opacity duration-200">
+        {job?.url ? (
+          <a
+            href={getFormattedUrl(job.url)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-gray-100 hover:bg-blue-100 p-1 rounded-sm cursor-pointer"
+          >
+            <ExternalLink size={15} />
+          </a>
+        ) : (
+          <button
+            type="button"
+            onClick={() =>
+              toast.error(
+                "No URL provided for this job. Please add a URL to view the job posting."
+              )
+            }
+            className="bg-gray-100 hover:bg-blue-100 p-1 rounded-sm cursor-pointer"
+          >
+            <ExternalLink size={15} />
+          </button>
+        )}
+        <EditJob job={job} />
 
-        <AlertDialog>
-          <AlertDialogTrigger>
-            <div
-              className="text-red-500 bg-gray-100 hover:bg-red-100 p-1 rounded-sm cursor-pointer "
-              role="button"
-            >
-              <Trash2 size={15} />
-            </div>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction className="text-red-500 bg-red-50 hover:bg-red-100 px-8">
-                Delete
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        <DeleteJob job={job} />
       </div>
 
       <DropdownMenu>

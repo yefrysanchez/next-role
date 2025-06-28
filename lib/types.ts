@@ -10,7 +10,7 @@ export type SignUpTypes = {
   lastName: string;
 };
 
-export type JobModality = "remote" | "hybrid" | "on_site";
+export type JobModality = "remote" | "on_site" | "hybrid";
 
 export type Job = {
   id: number;
@@ -20,6 +20,7 @@ export type Job = {
   url?: string | null | undefined;
   salary?: string | null | undefined;
   description?: string | null | undefined;
+  createdAt?: Date | null
 };
 
 export type KanbanColumns = {
@@ -33,4 +34,11 @@ export type ColumnsTypes = {
   columnTitle: string;
   order: number;
   jobs: Job[];
+};
+
+export type CreateBoardTypes = {
+  id: string;
+  title: string;
+  userId: string;
+  slug: string
 };

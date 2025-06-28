@@ -42,6 +42,8 @@ const BoardColumn = async ({ title, column }: BoardColumnTypes) => {
 
   const jobs = await getJobs(column.id);
 
+  console.log(jobs);
+
   return (
     <div className="shrink-0 w-3/4 xl:w-full h-[83vh] bg-white pt-12 border border-gray-100 rounded-lg flex flex-col">
       <Suspense
@@ -55,7 +57,7 @@ const BoardColumn = async ({ title, column }: BoardColumnTypes) => {
         </div>
       </Suspense>
 
-      <CreateJob />
+      <CreateJob columnId={column.id} />
       <SearchJobs />
       <div className="mt-4 flex flex-col items-center px-2 gap-4 flex-1 overflow-y-scroll overflow-x-hidden">
         {jobs && jobs.length > 0 ? (
@@ -63,7 +65,6 @@ const BoardColumn = async ({ title, column }: BoardColumnTypes) => {
         ) : (
           <p className="text-gray-500">No jobs available in this column.</p>
         )}
-
       </div>
     </div>
   );
