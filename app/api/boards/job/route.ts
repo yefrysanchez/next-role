@@ -60,20 +60,11 @@ export async function POST(req: NextRequest) {
 // Edit Job
 
 export async function PATCH(req: NextRequest) {
-  const {
-    id,
-    columnId,
-    company,
-    jobTitle,
-    modality,
-    jobUrl,
-    salary,
-    description,
-  }: Job = await req.json();
+  const { id, company, jobTitle, modality, jobUrl, salary, description }: Job =
+    await req.json();
 
   const updatedJob = {
     id,
-    columnId,
     company,
     title: jobTitle,
     modality,
@@ -92,20 +83,14 @@ export async function PATCH(req: NextRequest) {
     // Check if any rows were updated by looking at the length of the returned array
     if (res.length === 0) {
       // This means no board with the given ID was found or updated
-      return NextResponse.json(
-        { message: "Board not found or no changes made." },
-        { status: 404 }
-      );
+      return NextResponse.json("Board not found or no changes made.");
     }
     // Success Response: Return a success message
-    return NextResponse.json({ message: "Board has been updated." });
+    return NextResponse.json("Job has been updated.");
   } catch (error) {
     // Error Handling: Log the error and return a 500 status
     console.error("Error updating board:", error);
-    return NextResponse.json(
-      { error: "An error occurred while updating the job." },
-      { status: 500 }
-    );
+    return NextResponse.json("An error occurred while updating the job.");
   }
 }
 

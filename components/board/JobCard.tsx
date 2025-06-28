@@ -15,6 +15,7 @@ import { Badge } from "../ui/badge";
 import { Job } from "@/lib/types";
 import { toast } from "sonner";
 import DeleteJob from "./DeleteJob";
+import EditJob from "./EditJob";
 
 type JobCardProps = {
   job: Job;
@@ -82,6 +83,7 @@ const JobCard = ({ job }: JobCardProps) => {
             <ExternalLink size={15} />
           </button>
         )}
+        <EditJob job={job} />
 
         <DeleteJob job={job} />
       </div>

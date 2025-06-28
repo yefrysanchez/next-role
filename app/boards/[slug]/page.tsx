@@ -32,13 +32,11 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
         />
       </div>
       <section className="xl:grid xl:grid-cols-4 gap-2 flex overflow-x-scroll lg:overflow-x-auto">
-        {columns.map((columns) => (
-          <BoardColumn
-            key={columns.id}
-            column={columns}
-            title={columns.title}
-          />
-        ))}
+        {columns
+          .sort((a, b) => a.order - b.order)
+          .map((column) => (
+            <BoardColumn key={column.id} column={column} title={column.title} />
+          ))}
       </section>
     </div>
   );
