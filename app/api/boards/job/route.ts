@@ -100,12 +100,14 @@ export async function DELETE(req: NextRequest) {
 
   try {
     await db.delete(jobs).where(eq(jobs.id, id));
-    NextResponse.json({ message: "Job has been deleted." });
+
+    // Ensure proper response is sent back with status code 200
+    return NextResponse.json({ message: "Job has been deleted." }, { status: 200 });
   } catch (error) {
     console.error("Error deleting job:", error);
-    return NextResponse.json(
-      { error: "An error occurred while deleting the job." },
-      { status: 500 }
-    );
+    
+    // Ensure the error response includes a meaningful message and correct status
+    return NextResponse.json({ error: "An error occurred while deleting the job." }, { status: 500 });
   }
 }
+
