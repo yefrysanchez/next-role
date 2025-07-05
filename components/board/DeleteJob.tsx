@@ -31,7 +31,7 @@ const DeleteJob = ({ job }: DeleteJobProps) => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const handleDelete = async () => {
-    setIsLoading(true);
+    setIsLoading(true); // Start loading state
 
     try {
       const res = await fetch(`${apiUrl}/boards/job`, {
@@ -43,8 +43,9 @@ const DeleteJob = ({ job }: DeleteJobProps) => {
       });
 
       if (!res.ok) {
-        setIsLoading(false);
-        throw new Error(`Failed to delete job.`);
+        const errorDetails = await res.text(); // Capture error message from response
+        console.log(errorDetails);
+        throw new Error(`Failed to delete job. ${errorDetails}`);
       }
 
       const data = await res.json();
@@ -57,7 +58,7 @@ const DeleteJob = ({ job }: DeleteJobProps) => {
       console.error("Error deleting job:", error);
       toast.error(`Failed to delete job "${job.title}" at ${job.company}.`);
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Stop loading state
       router.refresh(); // Refresh the page to reflect the deletion
       setOpen(false); // Close the dialog after deletion
     }

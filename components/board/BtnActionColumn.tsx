@@ -63,7 +63,7 @@ const BtnActionColumn = () => {
           className="w-full flex items-center px-2 py-2 text-sm hover:bg-gray-100"
         >
           <Dialog>
-            <DialogTrigger className="flex items-center">
+            <DialogTrigger className="flex items-center w-full cursor-pointer">
               <Pencil size={15} className="mr-2" />
               <span>Edit Title</span>
             </DialogTrigger>
@@ -95,7 +95,7 @@ const BtnActionColumn = () => {
           className="w-full flex items-center px-2 py-2 text-sm hover:bg-gray-100"
         >
           <Dialog open={iconOpen} onOpenChange={setIconOpen}>
-            <DialogTrigger className="flex items-center">
+            <DialogTrigger className="flex items-center w-full cursor-pointer">
               <Star size={15} className="mr-2" />
               <span>Change Icon</span>
             </DialogTrigger>
@@ -114,7 +114,7 @@ const BtnActionColumn = () => {
 
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <button className="w-full flex items-center text-red-600 px-2 py-2 text-sm hover:bg-gray-100">
+            <button className="w-full flex items-center text-red-600 px-2 py-2 text-sm hover:bg-gray-100 cursor-pointer">
               <Trash2 size={15} className="mr-2 text-red-500" />
               <span>Delete</span>
             </button>

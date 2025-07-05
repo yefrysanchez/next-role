@@ -34,24 +34,27 @@ const JobCard = ({ job }: JobCardProps) => {
     }
   };
 
-
-
   return (
-    <div className="bg-gray-50 group:  w-full p-4 rounded-md grid gap-1 mx-2 pb-8 group relative hover:bg-gray-100 cursor-grab active:cursor-grabbing active:opacity-65">
+    <div className="bg-gray-50 group w-full p-4 rounded-md grid gap-1 mx-2 pb-8 group relative hover:bg-gray-100 cursor-grab active:cursor-grabbing active:opacity-65">
       <JobDetails job={job}>
-        <h3 className="text-sm font-semibold flex items-center gap-2"><span>{job?.title}</span> <span className=" text-gray-400 transition-opacity duration-200 xl:opacity-0 group-hover:opacity-100"><Eye size={15} /></span></h3>
+        <h3 className="text-sm font-semibold flex items-center gap-2">
+          <span>{job?.title}</span>
+          <span className=" text-gray-400 transition-opacity duration-200 xl:opacity-0 group-hover:opacity-100">
+            <Eye size={15} />
+          </span>
+        </h3>
         <p className="text-xs font-medium text-muted-foreground">
           {job?.company}
         </p>
         <p className="text-green-600 text-xs">
           {job?.salary ? `$ ${job?.salary}` : ""}
         </p>
+        <Badge variant="outline">
+          <span className="scale-85 capitalize">
+            {handleModality(job?.modality || "Unknown Location")}
+          </span>
+        </Badge>
       </JobDetails>
-      <Badge variant="outline">
-        <span className="scale-85 capitalize">
-          {handleModality(job?.modality || "Unknown Location")}
-        </span>
-      </Badge>
       <div className="xl:opacity-0 gap-1 group-hover:opacity-100 flex absolute right-2 bottom-2 transition-opacity duration-200">
         {job?.url ? (
           <a
