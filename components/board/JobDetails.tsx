@@ -23,7 +23,7 @@ const JobDetails = ({ children, job }: JobDetailsTypes) => {
 
   return (
     <Dialog>
-      <DialogTrigger className="text-start cursor-pointer w-fit select-none">
+      <DialogTrigger className="text-start cursor-pointer w-full select-none">
         {children}
       </DialogTrigger>
       <DialogContent>
