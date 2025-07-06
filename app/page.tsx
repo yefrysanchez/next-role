@@ -1,4 +1,5 @@
 "use server";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
@@ -146,6 +147,7 @@ export default async function Home() {
           Sign Up for Free
         </Link>
       </section>
+      <Footer />
     </main>
   );
 }

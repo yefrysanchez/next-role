@@ -3,7 +3,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="h-[400px] bg-gray-900 px-6 pt-12 pb-8 xl:px-12 flex flex-col justify-between ">
+    <section className="h-[400px] bg-gray-900 px-6 pt-12 pb-8 xl:px-12 flex flex-col justify-between ">
       <div className="flex flex-col md:flex-row justify-between gap-2 items-center mx-auto max-w-7xl w-full">
         <div>
           <h2 className="text-xl font-medium tracking-tighter">
@@ -47,7 +47,7 @@ const Footer = () => {
         <p>© {new Date().getFullYear()} NextRole. All rights reserved.</p>
         <p>Built with ❤️ for job seekers</p>
       </div>
-    </footer>
+    </section>
   );
 };
 

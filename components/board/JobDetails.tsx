@@ -29,11 +29,13 @@ const JobDetails = ({ children, job }: JobDetailsTypes) => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            <h3 className="mb-4 text-base text-center border-dashed border-b pb-2">Job Details</h3>
-            <h3>{job?.title}</h3>
-            <h4 className="font-medium text-muted-foreground text-base">
+            <p className="mb-4 text-base text-center border-dashed border-b pb-2">
+              Job Details
+            </p>
+            <p>{job?.title}</p>
+            <p className="font-medium text-muted-foreground text-base">
               {job?.company}
-            </h4>
+            </p>
             <p className="text-green-600 text-xs font-normal">
               $ {job?.salary || "Salary not available"}
             </p>
@@ -72,7 +74,9 @@ const JobDetails = ({ children, job }: JobDetailsTypes) => {
 
         <h4 className="font-semibold text-base">Description</h4>
 
-        <p className="bg-gray-50 px-2 py-3 rounded-lg text-sm">{job?.description || "Description not available"}</p>
+        <p className="bg-gray-50 px-2 py-3 rounded-lg text-sm">
+          {job?.description || "Description not available"}
+        </p>
 
         <DialogFooter className="justify-end">
           <DialogClose asChild>
