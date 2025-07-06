@@ -1,9 +1,14 @@
-import { signUp } from "@/server/users";
+"use client";
 import { Button } from "./ui/button";
+import { toast } from "sonner";
 
 const SignUpBtn = () => {
+  const handleSignUp = async () => {
+    toast.info("This feature is not available yet.");
+  };
+
   return (
-    <Button onClick={signUp} type="button" className="w-full">
+    <Button onClick={handleSignUp} type="button" className="w-full">
       Create Account
     </Button>
   );

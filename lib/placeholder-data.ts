@@ -6,7 +6,7 @@ export const placeholderJobs: KanbanColumns = {
       id: 1,
       company: "Spotify",
       title: "Frontend Engineer",
-      modality: "Remote",
+      modality: "remote",
       url: "https://spotifyjobs.com/frontend-engineer",
       salary: "$100,000 - $120,000",
       description:
@@ -16,7 +16,7 @@ export const placeholderJobs: KanbanColumns = {
       id: 2,
       company: "Notion",
       title: "Product Engineer",
-      modality: "Hybrid",
+      modality: "hybrid",
       url: "https://notion.so/careers/product-engineer",
       salary: "$110,000 - $130,000",
       description:
@@ -28,7 +28,7 @@ export const placeholderJobs: KanbanColumns = {
       id: 4,
       company: "Google",
       title: "Software Engineer",
-      modality: "On Site",
+      modality: "on_site",
       url: "https://careers.google.com/jobs/software-engineer",
       salary: "$120,000 - $150,000",
       description:
@@ -38,7 +38,7 @@ export const placeholderJobs: KanbanColumns = {
       id: 243,
       company: "Stripe",
       title: "Full Stack Developer",
-      modality: "Hybrid",
+      modality: "hybrid",
       url: "https://stripe.com/jobs/full-stack-developer",
       salary: "$115,000 - $140,000",
       description: "Work on end-to-end development of payment solutions.",
@@ -49,7 +49,7 @@ export const placeholderJobs: KanbanColumns = {
       id: 53,
       company: "Meta",
       title: "React Engineer",
-      modality: "Remote",
+      modality: "remote",
       url: "https://meta.com/careers/react-engineer",
       salary: "$130,000 - $160,000",
       description: "Build React components for the Facebook web platform.",
@@ -60,7 +60,7 @@ export const placeholderJobs: KanbanColumns = {
       id: 1254,
       company: "Amazon",
       title: "Backend Engineer",
-      modality: "On Site",
+      modality: "on_site",
       url: "https://amazon.jobs/backend-engineer",
       salary: "$125,000 - $155,000",
       description:
