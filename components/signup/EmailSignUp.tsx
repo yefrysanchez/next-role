@@ -56,10 +56,10 @@ const EmailSignUp = () => {
         <div className="mt-4 text-sm flex gap-1 justify-center">
           Already have an account?
           <Link
-            href="/login"
+            href="/signin"
             className="hover:underline font-semibold text-black underline-offset-4"
           >
-            Log in
+            Sign In
           </Link>
         </div>
       </form></Card>

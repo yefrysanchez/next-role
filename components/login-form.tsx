@@ -26,17 +26,21 @@ export function LoginForm({
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLoginWithGoogle = async () => {
+    setIsLoading(true);
     await authClient.signIn.social({
       provider: "google",
       callbackURL: `${window.location.origin}/boards`,
     });
+
   };
 
   const handleLoginWithGithub = async () => {
+    setIsLoading(true);
     await authClient.signIn.social({
       provider: "github",
       callbackURL: `${window.location.origin}/boards`,
     });
+
   };
 
   const handleLoginWithEmail = async (formData: FormData) => {
@@ -132,6 +136,7 @@ export function LoginForm({
                   disabled={isLoading}
                   variant="outline"
                   className="w-full"
+                  type="button"
                 >
                   Sign with GitHub
                 </Button>

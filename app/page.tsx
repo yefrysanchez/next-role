@@ -33,7 +33,7 @@ export default async function Home() {
             Sign Up
           </Link>
           <span>|</span>
-          <Link className="hover:underline" href={"/login"}>
+          <Link className="hover:underline" href={"/signin"}>
             Sign In
           </Link>
         </div>
