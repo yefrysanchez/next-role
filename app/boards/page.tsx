@@ -1,7 +1,6 @@
 import BoardCard from "@/components/board-hub/BoardCard";
 import CreateBoard from "@/components/board-hub/CreateBoard";
 import { getBoards } from "@/lib/actions/actions";
-import { getSlug } from "@/lib/helpers";
 
 const Page = async () => {
   const boards = await getBoards();
@@ -15,7 +14,7 @@ const Page = async () => {
           <BoardCard
             key={i}
             title={board.title}
-            url={`/boards/${getSlug(board.id, board.title)}`}
+            url={`/boards/${board.id}`}
             id={board.id}
           />
         ))}
