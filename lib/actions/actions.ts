@@ -3,7 +3,6 @@ import { auth } from "../auth";
 import { db } from "@/db/drizzle";
 import { boards, columns, jobs } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { getSlug } from "../helpers";
 import { redirect } from "next/navigation";
 
 const { getSession } = auth.api;

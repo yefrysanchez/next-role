@@ -12,6 +12,6 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/boards", "/settings", "/boards/board"], // Specify the routes the middleware applies to
+  matcher: ["/boards"], // Specify the routes the middleware applies to
 };
 // This middleware checks for a session cookie and redirects to the sign-in page if not present.

@@ -22,7 +22,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
     <div className="h-full border-t bg-gray-100 pt-16 px-4">
       <BackBtn />
       <div className="group flex items-center justify-center gap-2  py-4 ">
-        <h1 className="font-bold tracking-tighter   text-4xl text-centerflex justify-center items-start gap-2 group">
+        <h1 className="font-bold tracking-tighter   text-4xl text-center flex justify-center items-start gap-2 group">
           {board.title}
         </h1>
         <ChangeBoardTitleBtn
