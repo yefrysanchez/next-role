@@ -19,7 +19,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const columns = await getColumns(board.id);
 
   return (
-    <div className="h-full border-t bg-gray-100 pt-16 px-4">
+    <div className="h-screen border-t bg-gray-100 pt-16 px-4 flex flex-col">
       <BackBtn />
       <div className="group flex items-center justify-center gap-2  py-4 ">
         <h1 className="font-bold tracking-tighter   text-4xl text-center flex justify-center items-start gap-2 group">
@@ -31,7 +31,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
           title={board.title}
         />
       </div>
-      <section className="xl:grid xl:grid-cols-4 gap-2 flex overflow-x-scroll lg:overflow-x-auto">
+      <section className="xl:grid xl:grid-cols-4 gap-2 flex overflow-x-scroll lg:overflow-x-auto h-full mb-4 ">
         {columns
           .sort((a, b) => a.order - b.order)
           .map((column) => (
