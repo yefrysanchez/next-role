@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Montserrat } from "next/font/google";
+import { Inter } from "next/font/google";
 import CookiesConsent from "@/components/CookiesConsent";
 
-const font = Montserrat({
+const font = Inter({
   subsets: ["latin"],
   weight: ["100", "400", "500", "700"],
 });
