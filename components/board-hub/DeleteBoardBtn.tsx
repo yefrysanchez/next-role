@@ -39,7 +39,7 @@ const DeleteBoardBtn = ({ id }: DeleteBoardBtnType) => {
           id,
         }),
       });
-      if (!res) {
+      if (!res.ok) {
         toast.error("An error have occured. Please try later.");
       }
 

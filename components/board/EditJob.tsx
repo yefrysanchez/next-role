@@ -115,7 +115,7 @@ const EditJob = ({ job }: EditJobProps) => {
           <Pencil size={15} />
         </div>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="h-screen md:h-auto overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl">Edit Job</DialogTitle>
         </DialogHeader>
@@ -193,7 +193,7 @@ const EditJob = ({ job }: EditJobProps) => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               name="description"
-              className="min-h-[200px]"
+              className="rounded-md max-h-60 overflow-y-auto"
             />
           </label>
 

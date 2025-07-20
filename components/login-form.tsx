@@ -15,19 +15,37 @@ import Link from "next/link";
 import { signIn } from "@/server/users";
 import { authClient } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
+import { useState } from "react";
+import Spinner from "./Spinner";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [error, setError] = useState<null | string>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleLoginWithGoogle = async () => {
+    setIsLoading(true);
     await authClient.signIn.social({
       provider: "google",
       callbackURL: `${window.location.origin}/boards`,
     });
+
   };
 
-  const handleLoginWithEmail = async(formData: FormData) => {
+  const handleLoginWithGithub = async () => {
+    setIsLoading(true);
+    await authClient.signIn.social({
+      provider: "github",
+      callbackURL: `${window.location.origin}/boards`,
+    });
+
+  };
+
+  const handleLoginWithEmail = async (formData: FormData) => {
+    setIsLoading(true);
+    setError(null);
 
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
@@ -38,14 +56,14 @@ export function LoginForm({
 
     try {
       await signIn({ email, password });
-
     } catch (error) {
       console.error("Login failed:", error);
       // Handle error (e.g., show a notification)
     } finally {
-      redirect("/boards") // Redirect to boards after successful login
+      setIsLoading(false);
+      redirect("/boards"); // Redirect to boards after successful login
     }
-  }
+  };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -55,7 +73,10 @@ export function LoginForm({
             Login to your account
           </CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            <p>Enter your email below to login to your account</p>
+            {error && (
+              <p className="text-red-500 text-sm text-center">{error}</p>
+            )}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -87,8 +108,13 @@ export function LoginForm({
                   required
                 />
               </div>
-              <Button onClick={() => handleLoginWithEmail} type="button" className="w-full">
-                Login
+              <Button
+                disabled={isLoading}
+                onClick={() => handleLoginWithEmail}
+                type="button"
+                className="w-full"
+              >
+                {isLoading ? <Spinner /> : "Sign In"}
               </Button>
               <div className="flex items-center gap-4">
                 <div className="h-1 w-full bg-soft-gray rounded-lg"></div>
@@ -97,15 +123,22 @@ export function LoginForm({
               </div>
               <div className="flex flex-col gap-3">
                 <Button
+                  disabled={isLoading}
                   type="button"
                   onClick={handleLoginWithGoogle}
                   variant="outline"
                   className="w-full"
                 >
-                  Login with Google
+                  Sign with Google
                 </Button>
-                <Button variant="outline" className="w-full">
-                  Login with GitHub
+                <Button
+                  onClick={handleLoginWithGithub}
+                  disabled={isLoading}
+                  variant="outline"
+                  className="w-full"
+                  type="button"
+                >
+                  Sign with GitHub
                 </Button>
               </div>
             </div>

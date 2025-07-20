@@ -3,7 +3,6 @@ import { auth } from "../auth";
 import { db } from "@/db/drizzle";
 import { boards, columns, jobs } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { getSlug } from "../helpers";
 import { redirect } from "next/navigation";
 
 const { getSession } = auth.api;
@@ -16,7 +15,7 @@ export const getBoards = async () => {
   const session = await getSession({ headers: await headers() });
 
   if (!session?.user.id) {
-    redirect("/login")
+    redirect("/signin")
   }
   const res = await db
     .select()
@@ -25,15 +24,15 @@ export const getBoards = async () => {
   return res;
 };
 
-export const getBoard = async (slug: string) => {
+export const getBoard = async (id: string) => {
   "use server";
   const session = await getSession({ headers: await headers() });
 
   if (!session?.user.id) {
-     redirect("/login")
+     redirect("/signin")
   }
   const res = await getBoards();
-  const board = res.find((board) => getSlug(board.id, board.title) === slug);
+  const board = res.find((board) => board.id === id);
   if (!board) {
     return null;
   }
@@ -51,7 +50,7 @@ export const getColumns = async (boardId: string) => {
   const session = await getSession({ headers: await headers() });
 
   if (!session?.user.id) {
-    redirect("/login")
+    redirect("/signin")
   }
 
   const res = await db
@@ -68,7 +67,7 @@ export const getJobs = async (columnId: number) => {
   const session = await getSession({ headers: await headers() });
 
   if (!session?.user.id) {
-     redirect("/login")
+     redirect("/signin")
   }
 
   const res = await db.select().from(jobs).where(eq(jobs.columnId, columnId));

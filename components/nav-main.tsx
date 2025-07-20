@@ -16,7 +16,6 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-import { getSlug } from "@/lib/helpers";
 import { getBoards } from "@/lib/actions/actions";
 
 export async function NavMain() {
@@ -46,11 +45,11 @@ export async function NavMain() {
                     </SidebarMenuSubButton>
                   </SidebarMenuSubItem>
 
-                  {boards.map((subItem) => (
-                    <SidebarMenuSubItem key={subItem.id}>
+                  {boards.map((board) => (
+                    <SidebarMenuSubItem key={board.id}>
                       <SidebarMenuSubButton asChild>
-                        <Link href={`/boards/${getSlug(subItem.id, subItem.title)}`}>
-                          <span>{subItem.title}</span>
+                        <Link href={`/boards/${board.id}`}>
+                          <span>{board.title}</span>
                         </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>

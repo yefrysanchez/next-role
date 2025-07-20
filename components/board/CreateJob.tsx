@@ -156,7 +156,7 @@ const CreateJob = ({ columnId }: CreateJobTypes) => {
 
           <label htmlFor="description">
             <span className="font-bold text-xs">Job Description</span>
-            <Textarea name="description" />
+            <Textarea name="description"  className="rounded-md max-h-60 overflow-y-auto" />
           </label>
 
           <div className="flex gap-4 justify-end">

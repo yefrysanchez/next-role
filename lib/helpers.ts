@@ -35,3 +35,15 @@ export const getFormattedUrl = (url: string) => {
 
   // If it's already a full URL, like "https://jobs.example.com", it’s used as-is.
 };
+
+// Salary Format
+
+export function formatCurrency(amount: string): string {
+  if (!amount) {
+    return "";
+  }
+  const num = Number(amount);
+  return `$${Math.floor(num)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+}

@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  Bell,
-  ChevronsUpDown,
-  LogOut,
-  Settings,
-} from "lucide-react";
+import { ChevronsUpDown, Hammer, LogOut, MessageCirclePlus, Settings } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -29,6 +24,7 @@ import { createAuthClient } from "better-auth/react";
 import { getInitials } from "@/lib/utils";
 import Image from "next/image";
 import { AvatarSkeleton } from "./skeletons/AvatarSkeleton";
+import Link from "next/link";
 const { useSession } = createAuthClient();
 
 export function NavUser() {
@@ -107,25 +103,36 @@ export function NavUser() {
                 </div>
               </div>
             </DropdownMenuLabel>
-            
+
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Settings />
-                Settings
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
-              </DropdownMenuItem>
+              <Link href={"/boards/settings"}>
+                <DropdownMenuItem>
+                  <Settings />
+                  Settings
+                </DropdownMenuItem>
+              </Link>
+              <Link href={"/boards/skills"}>
+                <DropdownMenuItem>
+                  <Hammer />
+                  Skills
+                </DropdownMenuItem>
+              </Link>
+              <Link href={"/boards/feedback"}>
+                <DropdownMenuItem>
+                  <MessageCirclePlus />
+                  Feedback
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
+   
               onClick={() =>
                 authClient.signOut({
                   fetchOptions: {
                     onSuccess: () => {
-                      router.push("/login");
+                      router.push("/signin");
                     },
                   },
                 })

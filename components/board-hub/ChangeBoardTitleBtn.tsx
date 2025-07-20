@@ -20,10 +20,14 @@ import { useRouter } from "next/navigation";
 type ChangeBoardTitleBtnTypes = {
   id: string;
   title: string;
-  className?: string //so depend on where is used we can change the style
+  className?: string; //so depend on where is used we can change the style
 };
 
-const ChangeBoardTitleBtn = ({ id, title, className = "" }: ChangeBoardTitleBtnTypes) => {
+const ChangeBoardTitleBtn = ({
+  id,
+  title,
+  className = "",
+}: ChangeBoardTitleBtnTypes) => {
   const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/boards`;
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -57,8 +61,9 @@ const ChangeBoardTitleBtn = ({ id, title, className = "" }: ChangeBoardTitleBtnT
         setIsLoading(false);
         toast.error("An error have occured. Please try later.");
       }
-      setOpen(false);
+
       toast.success("Board's title changed successfully.");
+      setOpen(false);
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error("An error occurred:", error.message);
@@ -75,7 +80,9 @@ const ChangeBoardTitleBtn = ({ id, title, className = "" }: ChangeBoardTitleBtnT
   return (
     <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger>
-        <div className={`flex justify-center items-center border h-full w-10 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors ${className}`}>
+        <div
+          className={`flex justify-center items-center border h-full w-10 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors ${className}`}
+        >
           <Pencil size={15} />
         </div>
       </DialogTrigger>
