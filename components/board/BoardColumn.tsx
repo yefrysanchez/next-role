@@ -7,9 +7,7 @@ import {
   SquareX,
 } from "lucide-react";
 
-import JobCard from "./JobCard";
 import BtnActionColumn from "./BtnActionColumn";
-import SearchJobs from "./SearchJobs";
 import CreateJob from "./CreateJob";
 import { getJobs } from "@/lib/actions/actions";
 import { Skeleton } from "../ui/skeleton";
@@ -44,7 +42,7 @@ const BoardColumn = async ({ title, column }: BoardColumnTypes) => {
   const jobs = await getJobs(column.id);
 
   return (
-    <div className="shrink-0 w-3/4 xl:w-full max-h-[1100px] bg-white pt-12 rounded-lg flex flex-col overflow-hidden">
+    <div className="shrink-0 w-3/4 xl:w-full max-h-[1100px] bg-white pt-12 pb-2 rounded-lg flex flex-col overflow-hidden">
       <Suspense
         fallback={<Skeleton className="h-10 bg-gray-100 w-5/6 mx-auto mb-4" />}
       >

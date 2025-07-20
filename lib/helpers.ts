@@ -39,6 +39,9 @@ export const getFormattedUrl = (url: string) => {
 // Salary Format
 
 export function formatCurrency(amount: string): string {
+  if (!amount) {
+    return "";
+  }
   const num = Number(amount);
   return `$${Math.floor(num)
     .toString()

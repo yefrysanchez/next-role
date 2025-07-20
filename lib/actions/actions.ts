@@ -24,7 +24,7 @@ export const getBoards = async () => {
   return res;
 };
 
-export const getBoard = async (slug: string) => {
+export const getBoard = async (id: string) => {
   "use server";
   const session = await getSession({ headers: await headers() });
 
@@ -32,7 +32,7 @@ export const getBoard = async (slug: string) => {
      redirect("/signin")
   }
   const res = await getBoards();
-  const board = res.find((board) => board.id === slug);
+  const board = res.find((board) => board.id === id);
   if (!board) {
     return null;
   }
