@@ -71,8 +71,8 @@ const JobCard = ({ job }: JobCardProps) => {
               <ExternalLink size={15} />
             </a>
           ) : (
-            <button
-              type="button"
+            <div
+              role="button"
               onClick={() =>
                 toast.error(
                   "No URL provided for this job. Please add a URL to view the job posting."
@@ -81,7 +81,7 @@ const JobCard = ({ job }: JobCardProps) => {
               className="bg-gray-100 hover:bg-blue-100 p-1 rounded-sm cursor-pointer"
             >
               <ExternalLink size={15} />
-            </button>
+            </div>
           )}
           <EditJob job={job} />
 
@@ -104,7 +104,7 @@ const JobCard = ({ job }: JobCardProps) => {
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
-      </div>{" "}
+      </div>
     </JobDetails>
   );
 };

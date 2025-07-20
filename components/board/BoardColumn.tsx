@@ -13,7 +13,7 @@ import SearchJobs from "./SearchJobs";
 import CreateJob from "./CreateJob";
 import { getJobs } from "@/lib/actions/actions";
 import { Skeleton } from "../ui/skeleton";
-
+import JobList from "./JobList";
 
 type BoardColumnTypes = {
   title: string;
@@ -57,16 +57,8 @@ const BoardColumn = async ({ title, column }: BoardColumnTypes) => {
       </Suspense>
 
       <CreateJob columnId={column.id} />
-      <SearchJobs />
 
-      <div className="mt-4 flex flex-col items-center gap-4 px-2 overflow-y-auto">
-        {jobs && jobs.length > 0 ? (
-          jobs.map((job) => <JobCard key={job.id} job={job} />)
-        ) : (
-          <p className="text-gray-500">No jobs available in this column.</p>
-        )}
-        
-      </div>
+      <JobList initialJobs={jobs} />
     </div>
   );
 };
