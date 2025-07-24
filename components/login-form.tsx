@@ -12,17 +12,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { signIn } from "@/server/users";
 import { authClient } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import Spinner from "./Spinner";
+import { toast } from "sonner";
+import { Checkbox } from "./ui/checkbox";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const [error, setError] = useState<null | string>(null);
+  const [err, setError] = useState<null | string | undefined>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLoginWithGoogle = async () => {
@@ -31,7 +32,6 @@ export function LoginForm({
       provider: "google",
       callbackURL: `${window.location.origin}/boards`,
     });
-
   };
 
   const handleLoginWithGithub = async () => {
@@ -40,28 +40,42 @@ export function LoginForm({
       provider: "github",
       callbackURL: `${window.location.origin}/boards`,
     });
-
   };
 
-  const handleLoginWithEmail = async (formData: FormData) => {
+  const handleLoginWithEmail = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     setIsLoading(true);
     setError(null);
 
+    const formData = new FormData(e.target as HTMLFormElement);
+
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
+    const rememberMeCheck = formData.get("remember-me") as string;
 
     if (!email || !password) {
       throw new Error("Email and password are required");
     }
 
     try {
-      await signIn({ email, password });
+      const { error } = await authClient.signIn.email({
+        email,
+        password,
+        callbackURL: "/boards",
+        rememberMe: rememberMeCheck === "on" ? true : false,
+      });
+
+      if (error) {
+        setError(error.message);
+        toast.error(error.message);
+      }
+
+      redirect("/boards"); // Redirect to boards after successful login
     } catch (error) {
       console.error("Login failed:", error);
-      // Handle error (e.g., show a notification)
     } finally {
       setIsLoading(false);
-      redirect("/boards"); // Redirect to boards after successful login
     }
   };
 
@@ -74,17 +88,16 @@ export function LoginForm({
           </CardTitle>
           <CardDescription>
             <p>Enter your email below to login to your account</p>
-            {error && (
-              <p className="text-red-500 text-sm text-center">{error}</p>
-            )}
+            {err && <p className="text-red-500 text-sm text-center">{err}</p>}
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleLoginWithEmail}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="email">Email</Label>
                 <Input
+                  name="email"
                   id="email"
                   type="email"
                   placeholder="username@email.com"
@@ -102,18 +115,18 @@ export function LoginForm({
                   </Link>
                 </div>
                 <Input
+                  name="password"
                   id="password"
                   type="password"
                   placeholder="••••••••••"
                   required
                 />
+                <div className="flex items-center justify-end gap-3">
+                  <Checkbox name="remember-me" id="remember-me" />
+                  <Label htmlFor="remember-me">Remember me</Label>
+                </div>
               </div>
-              <Button
-                disabled={isLoading}
-                onClick={() => handleLoginWithEmail}
-                type="button"
-                className="w-full"
-              >
+              <Button disabled={isLoading} type="submit" className="w-full">
                 {isLoading ? <Spinner /> : "Sign In"}
               </Button>
               <div className="flex items-center gap-4">
