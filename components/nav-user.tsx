@@ -1,6 +1,12 @@
 "use client";
 
-import { ChevronsUpDown, Hammer, LogOut, MessageCirclePlus, Settings } from "lucide-react";
+import {
+  ChevronsUpDown,
+  Hammer,
+  LogOut,
+  MessageCirclePlus,
+  Settings,
+} from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -25,7 +31,6 @@ import Image from "next/image";
 import { AvatarSkeleton } from "./skeletons/AvatarSkeleton";
 import Link from "next/link";
 const { useSession } = createAuthClient();
-
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -63,7 +68,12 @@ export function NavUser() {
                   src={session?.user.image || "/placeholder.webp"}
                   alt={session?.user.name}
                 />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg">
+                  <AvatarImage
+                    src={"/placeholder.webp"}
+                    alt={session?.user.name}
+                  />
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">
@@ -91,11 +101,11 @@ export function NavUser() {
                   />
                   <AvatarFallback className="rounded-lg">
                     <Image
-                    height={96}
-                    width={96}
-                    src={"/placeholder.webp"}
-                    alt={`${session?.user.name}'s avatar`}
-                  />
+                      height={96}
+                      width={96}
+                      src={"/placeholder.webp"}
+                      alt={`${session?.user.name}'s avatar`}
+                    />
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
@@ -132,7 +142,6 @@ export function NavUser() {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-   
               onClick={() =>
                 authClient.signOut({
                   fetchOptions: {
