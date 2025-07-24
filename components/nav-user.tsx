@@ -21,11 +21,11 @@ import {
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { createAuthClient } from "better-auth/react";
-import { getInitials } from "@/lib/utils";
 import Image from "next/image";
 import { AvatarSkeleton } from "./skeletons/AvatarSkeleton";
 import Link from "next/link";
 const { useSession } = createAuthClient();
+
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -60,7 +60,7 @@ export function NavUser() {
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage
-                  src={session?.user.image || "/avatar-placeholder.jpg"}
+                  src={session?.user.image || "/placeholder.webp"}
                   alt={session?.user.name}
                 />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
@@ -86,11 +86,16 @@ export function NavUser() {
                   <Image
                     height={96}
                     width={96}
-                    src={session?.user.image || "/avatar-placeholder.jpg"}
+                    src={session?.user.image || "/placeholder.webp"}
                     alt={`${session?.user.name}'s avatar`}
                   />
                   <AvatarFallback className="rounded-lg">
-                    {getInitials(session?.user.name || "")}
+                    <Image
+                    height={96}
+                    width={96}
+                    src={"/placeholder.webp"}
+                    alt={`${session?.user.name}'s avatar`}
+                  />
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
