@@ -47,3 +47,28 @@ export function formatCurrency(amount: string): string {
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
 }
+
+export function validatePassword(
+  password: string,
+  setError: (err: string | null) => void
+): boolean {
+  if (password.length < 8) {
+    setError("Password must be at least 8 characters long.");
+    return true;
+  }
+  if (!/[0-9]/.test(password)) {
+    setError("Password must contain at least one number.");
+    return true;
+  }
+  if (!/[A-Z]/.test(password)) {
+    setError("Password must contain at least one uppercase letter.");
+  }
+  if (!/[a-z]/.test(password)) {
+    setError("Password must contain at least one lowercase letter.");
+    return true;
+  }
+
+  setError(null);
+
+  return false;
+}
