@@ -20,6 +20,7 @@ export const skillCategories = {
     "PostCSS",
     "Preact",
     "React",
+    "Redux",
     "SASS/SCSS",
     "Styled Components",
     "Tailwind CSS",
@@ -29,6 +30,12 @@ export const skillCategories = {
     "WebAssembly",
     "Webpack",
     "Storybook",
+    "Cross-browser Compatibility",
+    "Responsive Design",
+    "Progressive Enhancement",
+    "Graceful Degradation",
+    "Web Accessibility",
+    "Website Performance Optimization",
   ],
 
   Backend: [
@@ -45,7 +52,6 @@ export const skillCategories = {
     "gRPC",
     "Java",
     "Koa.js",
-    "Kotlin",
     "Laravel",
     "Meteor.js",
     "NestJS",
@@ -58,8 +64,9 @@ export const skillCategories = {
     "Shell scripting (Bash)",
     "Spring Boot",
     "Tcl",
-    "TypeScript",
     "WebSockets",
+    "REST API",
+    
   ],
 
   Mobile: [
@@ -107,7 +114,7 @@ export const skillCategories = {
     "MySQL",
     "Neo4j",
     "Oracle DB",
-    "PostgreSQL",
+    "PostgresSQL",
     "Redis",
     "SQLite",
     "Supabase",
@@ -115,8 +122,8 @@ export const skillCategories = {
 
   "Cloud & DevOps": [
     "Alibaba Cloud",
-    "Amazon Web Services (AWS)", // added AWS
-    "Google Cloud", // added Google Cloud
+    "Amazon Web Services (AWS)",
+    "Google Cloud",
     "Ansible",
     "Apache",
     "Azure",
@@ -155,7 +162,6 @@ export const skillCategories = {
     "CircleCI",
     "ClickUp",
     "Docker Compose",
-    "ESLint",
     "Figma",
     "Framer",
     "Git",
@@ -175,13 +181,16 @@ export const skillCategories = {
     "SVN",
     "Trello",
     "VSCode",
-    "Webpack",
     "Zsh",
     "Zeplin",
     "InVision",
     "Marvel App",
     "IntelliJ IDEA",
+    "Unit Testing",
+    "Integration Testing",
+    "Software Documentation",
   ],
+
   "Soft Skills": [
     "Communication",
     "Leadership",
@@ -198,5 +207,7 @@ export const skillCategories = {
     "Collaborative",
     "Mentoring",
     "Training",
+    "Product Ownership",
+    "Customer-centric Thinking",
   ],
 };

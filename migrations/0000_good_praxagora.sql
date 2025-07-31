@@ -1,4 +1,3 @@
-CREATE TYPE "public"."column_title" AS ENUM('rejected', 'applied', 'interview', 'offer');--> statement-breakpoint
 CREATE TYPE "public"."modality" AS ENUM('remote', 'on_site', 'hybrid');--> statement-breakpoint
 CREATE TABLE "account" (
 	"id" text PRIMARY KEY NOT NULL,
@@ -17,18 +16,18 @@ CREATE TABLE "account" (
 );
 --> statement-breakpoint
 CREATE TABLE "boards" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"title" varchar(256) NOT NULL,
 	"slug" varchar(256) NOT NULL,
-	"user_id" integer NOT NULL,
+	"user_id" text NOT NULL,
 	"created_at" timestamp DEFAULT now(),
 	CONSTRAINT "boards_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
 CREATE TABLE "columns" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"title" "column_title" NOT NULL,
-	"board_id" integer NOT NULL,
+	"title" varchar(50) NOT NULL,
+	"board_id" uuid NOT NULL,
 	"order" integer NOT NULL
 );
 --> statement-breakpoint
@@ -56,6 +55,23 @@ CREATE TABLE "session" (
 	CONSTRAINT "session_token_unique" UNIQUE("token")
 );
 --> statement-breakpoint
+CREATE TABLE "skill_categories" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"name" varchar(100) NOT NULL,
+	CONSTRAINT "skill_categories_name_unique" UNIQUE("name")
+);
+--> statement-breakpoint
+CREATE TABLE "skill_category_skills" (
+	"skill_id" integer NOT NULL,
+	"category_id" integer NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "skills" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"name" varchar(100) NOT NULL,
+	CONSTRAINT "skills_name_unique" UNIQUE("name")
+);
+--> statement-breakpoint
 CREATE TABLE "user" (
 	"id" text PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
@@ -65,6 +81,11 @@ CREATE TABLE "user" (
 	"created_at" timestamp NOT NULL,
 	"updated_at" timestamp NOT NULL,
 	CONSTRAINT "user_email_unique" UNIQUE("email")
+);
+--> statement-breakpoint
+CREATE TABLE "user_skills" (
+	"user_id" text NOT NULL,
+	"skill_id" integer NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "verification" (
@@ -80,4 +101,8 @@ ALTER TABLE "account" ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("
 ALTER TABLE "boards" ADD CONSTRAINT "boards_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "columns" ADD CONSTRAINT "columns_board_id_boards_id_fk" FOREIGN KEY ("board_id") REFERENCES "public"."boards"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "jobs" ADD CONSTRAINT "jobs_column_id_columns_id_fk" FOREIGN KEY ("column_id") REFERENCES "public"."columns"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "session" ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "session" ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "skill_category_skills" ADD CONSTRAINT "skill_category_skills_skill_id_skills_id_fk" FOREIGN KEY ("skill_id") REFERENCES "public"."skills"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "skill_category_skills" ADD CONSTRAINT "skill_category_skills_category_id_skill_categories_id_fk" FOREIGN KEY ("category_id") REFERENCES "public"."skill_categories"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "user_skills" ADD CONSTRAINT "user_skills_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "user_skills" ADD CONSTRAINT "user_skills_skill_id_skills_id_fk" FOREIGN KEY ("skill_id") REFERENCES "public"."skills"("id") ON DELETE cascade ON UPDATE no action;
