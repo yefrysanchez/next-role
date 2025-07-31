@@ -8,7 +8,6 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
-import { Button } from "../ui/button";
 import { Job } from "@/lib/types";
 import { ExternalLink } from "lucide-react";
 import { toast } from "sonner";
@@ -141,21 +140,20 @@ const JobDetails = ({ children, job }: JobDetailsTypes) => {
             </p>
 
             <DialogFooter className="justify-end flex-col-reverse md:flex-row">
-              <Button
+              <div
                 onClick={() => setIsEditting(true)}
-                className="px-6 font-semibold"
+                className=" bg-black px-6 py-2 rounded-md hover:bg-gray-800 text-white cursor-pointer duration-300"
                 aria-label={`Edit job details for ${job.title}`}
               >
                 Edit
-              </Button>
+              </div>
               <DialogClose asChild>
-                <Button
-                  variant="secondary"
-                  className="font-semibold"
+                <div
+                  className=" bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-200 cursor-pointer duration-300"
                   aria-label="Close job details dialog"
                 >
                   Close
-                </Button>
+                </div>
               </DialogClose>
             </DialogFooter>
           </>

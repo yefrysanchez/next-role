@@ -20,7 +20,8 @@ export type Job = {
   url?: string | null | undefined;
   salary?: string | null | undefined;
   description?: string | null | undefined;
-  createdAt?: Date | null
+  createdAt?: Date | null;
+  columnId: number
 };
 
 export type KanbanColumns = {
@@ -31,14 +32,15 @@ export type KanbanColumns = {
 };
 
 export type ColumnsTypes = {
-  columnTitle: string;
+  id: number;
+  title: string;
+  boardId: string;
   order: number;
-  jobs: Job[];
 };
 
 export type CreateBoardTypes = {
   id: string;
   title: string;
   userId: string;
-  slug: string
+  slug: string;
 };
