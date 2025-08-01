@@ -82,7 +82,7 @@ const JobDetails = ({ children, job }: JobDetailsTypes) => {
                 <div className="flex gap-2 flex-col md:flex-row justify-between items-start">
                   <div>
                     <h3 className="text-xl font-semibold">{job.title}</h3>
-                    <p className="text-gray-500 w-fit">{job.company}</p>
+                    <p className="text-gray-500 w-fit text-base leading-3">{job.company}</p>
                   </div>
                   {job.salary && (
                     <div className="text-green-600 font-medium">
@@ -140,7 +140,7 @@ const JobDetails = ({ children, job }: JobDetailsTypes) => {
                 </h4> <p className="text-xs text-gray-500 mb-2">
                   Skills automatically extracted from job description
                 </p>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 capitalize">
                   
                   {matchedSkills.map((skill) => (
                     <Badge

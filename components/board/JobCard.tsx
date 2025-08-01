@@ -23,6 +23,7 @@ import DeleteJob from "./DeleteJob";
 import EditJob from "./EditJob";
 import { formatCurrency, getFormattedUrl } from "@/lib/helpers";
 import { Skeleton } from "../ui/skeleton";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 type JobCardProps = {
   job: Job;
@@ -97,35 +98,56 @@ const JobCard = ({ job }: JobCardProps) => {
           className="xl:opacity-0 gap-1 group-hover:opacity-100 flex absolute right-2 bottom-2 transition-opacity duration-200 z-40"
         >
           {job?.url ? (
-            <a
-              href={getFormattedUrl(job.url)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-gray-100 hover:bg-blue-100 p-1 rounded-sm cursor-pointer"
-            >
-              <ExternalLink size={15} />
-            </a>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <a
+                  href={getFormattedUrl(job.url)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-gray-100 hover:bg-blue-100 p-1 rounded-sm cursor-pointer"
+                >
+                  <ExternalLink size={15} />
+                </a>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>View Job Posting</p>
+              </TooltipContent>
+            </Tooltip>
           ) : (
-            <div
-              role="button"
-              onClick={() =>
-                toast.error(
-                  "No URL provided for this job. Please add a URL to view the job posting."
-                )
-              }
-              className="bg-gray-100 hover:bg-blue-100 p-1 rounded-sm cursor-pointer"
-            >
-              <ExternalLink size={15} />
-            </div>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div
+                  role="button"
+                  onClick={() =>
+                    toast.error(
+                      "No URL provided for this job. Please add a URL to view the job posting."
+                    )
+                  }
+                  className="bg-gray-100 hover:bg-blue-100 p-1 rounded-sm cursor-pointer"
+                >
+                  <ExternalLink size={15} />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>View Job Posting</p>
+              </TooltipContent>
+            </Tooltip>
           )}
           <EditJob job={job} />
           <DeleteJob job={job} />
         </div>
 
-        <GripHorizontal
-          onClick={(e) => e.stopPropagation()}
-          className="absolute right-2 top-2 hidden xl:block hover:cursor-grab active:cursor-grabbing"
-        />
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <GripHorizontal
+              onClick={(e) => e.stopPropagation()}
+              className="absolute right-2 top-2 hidden xl:block hover:cursor-grab active:cursor-grabbing"
+            />
+          </TooltipTrigger>
+          <TooltipContent>
+            Drag Job
+          </TooltipContent>
+        </Tooltip>
 
         <DropdownMenu>
           <DropdownMenuTrigger className="absolute right-2 top-2 xl:hidden">

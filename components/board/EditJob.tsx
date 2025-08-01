@@ -27,6 +27,7 @@ import React, { FormEvent, useState } from "react";
 import Spinner from "../Spinner";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 type EditJobProps = {
   job: Job;
@@ -96,7 +97,7 @@ const EditJob = ({ job }: EditJobProps) => {
         throw new Error("Failed to update job.");
       }
       const data = await res.json();
-      toast.success(data || "Job updated successfully!")
+      toast.success(data || "Job updated successfully!");
     } catch (error: unknown) {
       console.error("Error editing job:", error);
 
@@ -111,9 +112,14 @@ const EditJob = ({ job }: EditJobProps) => {
   return (
     <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger className="w-full px-2">
-        <div className="bg-gray-100 hover:bg-blue-100 p-1 rounded-sm cursor-pointer">
-          <Pencil size={15} />
-        </div>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className="bg-gray-100 hover:bg-blue-100 p-1 rounded-sm cursor-pointer">
+              <Pencil size={15} />
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>Edit Job</TooltipContent>
+        </Tooltip>
       </DialogTrigger>
       <DialogContent className="h-screen md:h-auto overflow-y-auto">
         <DialogHeader>

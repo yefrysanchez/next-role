@@ -1,6 +1,6 @@
 import slugify from "slugify";
 import * as LucideIcons from "lucide-react"; // Import all icons as a namespace
-import { skillCategories } from "./tech-skills";
+import { aliases, skillCategories } from "./tech-skills";
 
 export function getSlug(id: string, title: string): string {
   return `${id}-${slugify(title, { lower: true, strict: true })}`;
@@ -76,16 +76,6 @@ export function validatePassword(
 
 // Skill Extraction -----
 
-// Aliases to handle common variants
-const aliases: Record<string, string[]> = {
-  javascript: ["js", "javascript", "vanilla js"],
-  html: ["html", "html5"],
-  css: ["css", "css3"],
-  react: ["react", "reactjs", "react.js"],
-  "node.js": ["node", "nodejs", "node.js"],
-  "c#": ["c#", "c sharp"],
-  // Add more if needed
-};
 
 function normalize(text: string): string {
   return text.toLowerCase().trim();
