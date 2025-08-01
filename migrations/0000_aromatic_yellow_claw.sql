@@ -57,19 +57,16 @@ CREATE TABLE "session" (
 --> statement-breakpoint
 CREATE TABLE "skill_categories" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"name" varchar(100) NOT NULL,
-	CONSTRAINT "skill_categories_name_unique" UNIQUE("name")
-);
---> statement-breakpoint
-CREATE TABLE "skill_category_skills" (
-	"skill_id" integer NOT NULL,
-	"category_id" integer NOT NULL
+	"user_id" text NOT NULL,
+	"name" varchar(100) NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "skills" (
 	"id" serial PRIMARY KEY NOT NULL,
+	"user_id" text NOT NULL,
+	"category_id" integer NOT NULL,
 	"name" varchar(100) NOT NULL,
-	CONSTRAINT "skills_name_unique" UNIQUE("name")
+	"is_custom" boolean DEFAULT false NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "user" (
@@ -102,7 +99,8 @@ ALTER TABLE "boards" ADD CONSTRAINT "boards_user_id_user_id_fk" FOREIGN KEY ("us
 ALTER TABLE "columns" ADD CONSTRAINT "columns_board_id_boards_id_fk" FOREIGN KEY ("board_id") REFERENCES "public"."boards"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "jobs" ADD CONSTRAINT "jobs_column_id_columns_id_fk" FOREIGN KEY ("column_id") REFERENCES "public"."columns"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "session" ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "skill_category_skills" ADD CONSTRAINT "skill_category_skills_skill_id_skills_id_fk" FOREIGN KEY ("skill_id") REFERENCES "public"."skills"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "skill_category_skills" ADD CONSTRAINT "skill_category_skills_category_id_skill_categories_id_fk" FOREIGN KEY ("category_id") REFERENCES "public"."skill_categories"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "skill_categories" ADD CONSTRAINT "skill_categories_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "skills" ADD CONSTRAINT "skills_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "skills" ADD CONSTRAINT "skills_category_id_skill_categories_id_fk" FOREIGN KEY ("category_id") REFERENCES "public"."skill_categories"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "user_skills" ADD CONSTRAINT "user_skills_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "user_skills" ADD CONSTRAINT "user_skills_skill_id_skills_id_fk" FOREIGN KEY ("skill_id") REFERENCES "public"."skills"("id") ON DELETE cascade ON UPDATE no action;

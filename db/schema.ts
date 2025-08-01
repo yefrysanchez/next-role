@@ -83,7 +83,7 @@ export const boards = pgTable("boards", {
 
 export const columns = pgTable("columns", {
   id: serial("id").primaryKey(),
-  title: varchar("title", { length: 50 }).notNull(), // ✅ Changed from enum to string
+  title: varchar("title", { length: 50 }).notNull(),
   boardId: uuid("board_id")
     .notNull()
     .references(() => boards.id),
@@ -106,33 +106,31 @@ export const jobs = pgTable("jobs", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-// ------------------ SKILLS ------------------
+// ------------------ SKILLS (Updated for user-specific logic) ------------------
 
+// 1. Categories per user
 export const skillCategories = pgTable("skill_categories", {
   id: serial("id").primaryKey(),
-  name: varchar("name", { length: 100 }).notNull().unique(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  name: varchar("name", { length: 100 }).notNull(),
 });
 
+// 2. Skills per user per category (custom or default)
 export const skills = pgTable("skills", {
   id: serial("id").primaryKey(),
-  name: varchar("name", { length: 100 }).notNull().unique(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  categoryId: integer("category_id")
+    .notNull()
+    .references(() => skillCategories.id, { onDelete: "cascade" }),
+  name: varchar("name", { length: 100 }).notNull(),
+  isCustom: boolean("is_custom").default(false).notNull(),
 });
 
-export const skillCategorySkills = pgTable(
-  "skill_category_skills",
-  {
-    skillId: integer("skill_id")
-      .notNull()
-      .references(() => skills.id, { onDelete: "cascade" }),
-    categoryId: integer("category_id")
-      .notNull()
-      .references(() => skillCategories.id, { onDelete: "cascade" }),
-  },
-  (table) => ({
-    pk: [table.skillId, table.categoryId],
-  })
-);
-
+// 3. User-selected skills
 export const userSkills = pgTable(
   "user_skills",
   {
@@ -153,6 +151,8 @@ export const userSkills = pgTable(
 export const userRelations = relations(user, ({ many }) => ({
   boards: many(boards),
   userSkills: many(userSkills),
+  skillCategories: many(skillCategories),
+  skills: many(skills),
 }));
 
 export const boardRelations = relations(boards, ({ one, many }) => ({
@@ -178,31 +178,25 @@ export const jobRelations = relations(jobs, ({ one }) => ({
   }),
 }));
 
-export const skillRelations = relations(skills, ({ many }) => ({
-  categories: many(skillCategorySkills),
-  users: many(userSkills),
+export const skillCategoryRelations = relations(skillCategories, ({ one, many }) => ({
+  user: one(user, {
+    fields: [skillCategories.userId],
+    references: [user.id],
+  }),
+  skills: many(skills),
 }));
 
-export const skillCategoryRelations = relations(
-  skillCategories,
-  ({ many }) => ({
-    skills: many(skillCategorySkills),
-  })
-);
-
-export const skillCategorySkillRelations = relations(
-  skillCategorySkills,
-  ({ one }) => ({
-    skill: one(skills, {
-      fields: [skillCategorySkills.skillId],
-      references: [skills.id],
-    }),
-    category: one(skillCategories, {
-      fields: [skillCategorySkills.categoryId],
-      references: [skillCategories.id],
-    }),
-  })
-);
+export const skillRelations = relations(skills, ({ one, many }) => ({
+  user: one(user, {
+    fields: [skills.userId],
+    references: [user.id],
+  }),
+  category: one(skillCategories, {
+    fields: [skills.categoryId],
+    references: [skillCategories.id],
+  }),
+  users: many(userSkills),
+}));
 
 export const userSkillRelations = relations(userSkills, ({ one }) => ({
   user: one(user, {
@@ -227,7 +221,6 @@ export const schema = {
   jobs,
   skills,
   skillCategories,
-  skillCategorySkills,
   userSkills,
   userRelations,
   boardRelations,
@@ -235,6 +228,5 @@ export const schema = {
   jobRelations,
   skillRelations,
   skillCategoryRelations,
-  skillCategorySkillRelations,
   userSkillRelations,
 };
