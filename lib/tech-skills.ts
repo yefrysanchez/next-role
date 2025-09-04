@@ -195,7 +195,7 @@ export const skillCategories = {
     "Data Structures",
     "Algorithms",
     "System Design",
-    "Vite"
+    "Vite",
   ],
 
   "Soft Skills": [
@@ -233,7 +233,7 @@ export const aliases: Record<string, string[]> = {
   eslint: ["eslint", "es lint"],
   gatsby: ["gatsby"],
   graphql: ["graphql", "gql"],
-  "html/css": ["html/css", "html and css", "html css", "htmlcss"],
+  "html/css": ["html/css", "html and css", "html css", "htmlcss", "html5", "css3"],
   javascript: ["js", "javascript", "vanilla js"],
   lit: ["lit"],
   litelement: ["litelement", "lit-element", "lit element"],
@@ -353,13 +353,28 @@ export const aliases: Record<string, string[]> = {
 
   // Cloud & DevOps
   "alibaba cloud": ["alibaba cloud"],
-  aws: ["amazon web services", "amazon aws", "aws"],
+  aws: [
+    "amazon web services",
+    "amazon aws",
+    "aws",
+    "ec2",
+    "s3",
+    "lambda",
+    "amazon s3",
+    "aws s3",
+    "cloudwatch",
+    "cloudformation",
+    "aws cloudformation",
+    "aws cloudwatch",
+    "ec2",
+    "amazon ec2",
+    "aws ec2",
+  ],
   "google cloud": ["gcp", "google cloud platform", "google cloud"],
   ansible: ["ansible"],
   apache: ["apache"],
   azure: ["azure", "microsoft azure"],
   "ci/cd": ["ci/cd", "cicd", "continuous integration", "continuous delivery"],
-  cloudformation: ["cloudformation", "aws cloudformation"],
   datadog: ["datadog"],
   digitalocean: ["digitalocean", "digital ocean"],
   docker: ["docker"],
@@ -381,10 +396,7 @@ export const aliases: Record<string, string[]> = {
   "vault by hashicorp": ["vault", "vault by hashicorp"],
   vercel: ["vercel"],
   netlify: ["netlify"],
-  cloudwatch: ["cloudwatch", "aws cloudwatch"],
-  s3: ["s3", "amazon s3", "aws s3"],
   cloudflare: ["cloudflare"],
-  ec2: ["ec2", "amazon ec2", "aws ec2"],
 
   // Tools & Others
   "ai/ml": ["artificial intelligence", "machine learning", "ml", "ai"],
