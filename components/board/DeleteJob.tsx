@@ -17,6 +17,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import Spinner from "../Spinner";
 import { Button } from "../ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 type DeleteJobProps = {
   job: Job;
@@ -67,12 +68,19 @@ const DeleteJob = ({ job }: DeleteJobProps) => {
   return (
     <AlertDialog onOpenChange={setOpen} open={open}>
       <AlertDialogTrigger>
-        <div
-          className="text-red-500 bg-gray-100 hover:bg-red-100 p-1 rounded-sm cursor-pointer "
-          role="button"
-        >
-          <Trash2 size={15} />
-        </div>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div
+              className="text-red-500 bg-gray-100 hover:bg-red-100 p-1 rounded-sm cursor-pointer "
+              role="button"
+            >
+              <Trash2 size={15} />
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            Delete Job
+          </TooltipContent>
+        </Tooltip>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

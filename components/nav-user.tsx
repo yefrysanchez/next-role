@@ -1,6 +1,12 @@
 "use client";
 
-import { ChevronsUpDown, Hammer, LogOut, MessageCirclePlus, Settings } from "lucide-react";
+import {
+  ChevronsUpDown,
+  Hammer,
+  LogOut,
+  MessageCirclePlus,
+  Settings,
+} from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -21,7 +27,6 @@ import {
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { createAuthClient } from "better-auth/react";
-import { getInitials } from "@/lib/utils";
 import Image from "next/image";
 import { AvatarSkeleton } from "./skeletons/AvatarSkeleton";
 import Link from "next/link";
@@ -60,10 +65,15 @@ export function NavUser() {
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage
-                  src={session?.user.image || "/avatar-placeholder.jpg"}
+                  src={session?.user.image || "/placeholder.webp"}
                   alt={session?.user.name}
                 />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg">
+                  <AvatarImage
+                    src={"/placeholder.webp"}
+                    alt={session?.user.name}
+                  />
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">
@@ -86,11 +96,16 @@ export function NavUser() {
                   <Image
                     height={96}
                     width={96}
-                    src={session?.user.image || "/avatar-placeholder.jpg"}
+                    src={session?.user.image || "/placeholder.webp"}
                     alt={`${session?.user.name}'s avatar`}
                   />
                   <AvatarFallback className="rounded-lg">
-                    {getInitials(session?.user.name || "")}
+                    <Image
+                      height={96}
+                      width={96}
+                      src={"/placeholder.webp"}
+                      alt={`${session?.user.name}'s avatar`}
+                    />
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
@@ -127,7 +142,6 @@ export function NavUser() {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-   
               onClick={() =>
                 authClient.signOut({
                   fetchOptions: {

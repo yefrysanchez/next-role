@@ -5,43 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1749408679008,
-      "tag": "0000_slim_stephen_strange",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1749419345274,
-      "tag": "0001_thick_glorian",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1749424093034,
-      "tag": "0002_greedy_maggott",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1749424446688,
-      "tag": "0003_rainy_shiva",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1749425718214,
-      "tag": "0004_cheerful_banshee",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1749675704933,
-      "tag": "0005_futuristic_thunderbolts",
+      "when": 1754010250257,
+      "tag": "0000_aromatic_yellow_claw",
       "breakpoints": true
     }
   ]

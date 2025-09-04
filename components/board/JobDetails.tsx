@@ -8,16 +8,20 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
-import { Button } from "../ui/button";
 import { Job } from "@/lib/types";
 import { ExternalLink } from "lucide-react";
 import { toast } from "sonner";
-import { formatCurrency, getFormattedUrl } from "@/lib/helpers";
+import {
+  formatCurrency,
+  getFormattedUrl,
+  getMatchedAndUnmatchedSkills,
+} from "@/lib/helpers";
 import { Badge } from "../ui/badge";
 import { useState } from "react";
 import EditJobDetails from "./EditJobDetails";
 import Link from "next/link";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { Button } from "../ui/button";
 
 type JobDetailsTypes = {
   children: React.ReactNode;
@@ -42,6 +46,20 @@ const JobDetails = ({ children, job }: JobDetailsTypes) => {
     }
   };
 
+  // Mock user skills for now.
+  const userSkills = [
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "React",
+    "Node.js",
+    "TypeScript",
+  ];
+
+  const { matchedSkills, unmatchedSkills } = job.description
+    ? getMatchedAndUnmatchedSkills(userSkills, job.description)
+    : { matchedSkills: [], unmatchedSkills: [] };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
@@ -64,7 +82,7 @@ const JobDetails = ({ children, job }: JobDetailsTypes) => {
                 <div className="flex gap-2 flex-col md:flex-row justify-between items-start">
                   <div>
                     <h3 className="text-xl font-semibold">{job.title}</h3>
-                    <p className="text-gray-500 w-fit">{job.company}</p>
+                    <p className="text-gray-500 w-fit text-base leading-3">{job.company}</p>
                   </div>
                   {job.salary && (
                     <div className="text-green-600 font-medium">
@@ -80,11 +98,11 @@ const JobDetails = ({ children, job }: JobDetailsTypes) => {
                 href={getFormattedUrl(job.url)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:bg-gray-50 p-1 rounded-sm cursor-pointer flex items-center text-xs gap-2 w-fit select-none hover:underline transition-colors"
+                className="hover:bg-gray-100 p-1 rounded-sm cursor-pointer flex items-center text-xs gap-2 w-fit select-none hover:underline transition-colors"
                 aria-label={`Visit job posting for ${job.title}`}
               >
-                <ExternalLink size={15} />
                 <span className="font-medium">View Job Posting</span>
+                <ExternalLink size={15} />
               </a>
             ) : (
               <button
@@ -102,60 +120,82 @@ const JobDetails = ({ children, job }: JobDetailsTypes) => {
               Added on {date.toLocaleDateString()}
             </p>
 
-            <div className="pt-2">
-              <h4 className="font-medium mb-3 flex gap-1 items-center">
-                <span>Key Skills Required</span>{" "}
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Link
-                      className="text-xs hover:underline text-muted-foreground flex gap-1 items-center"
-                      href={"/boards/skills"}
+            {userSkills.length > 0 ? (
+              <div className="pt-2">
+                <h4 className="font-medium mb-3 flex gap-1 items-center">
+                  <span>Key Skills Required</span>{" "}
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link
+                        className="text-xs hover:underline text-muted-foreground flex gap-1 items-center"
+                        href={"/boards/skills"}
+                      >
+                        <ExternalLink size={15} />
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Edit your skillset</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </h4> <p className="text-xs text-gray-500 mb-2">
+                  Skills automatically extracted from job description
+                </p>
+                <div className="flex flex-wrap gap-2 capitalize">
+                  
+                  {matchedSkills.map((skill) => (
+                    <Badge
+                      key={skill}
+                      className="text-xs bg-green-100 text-green-600"
                     >
-                      <ExternalLink size={15} />
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Edit your skillset</p>
-                  </TooltipContent>
-                </Tooltip>
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                <Badge
-                  variant="secondary"
-                  className="text-xs bg-green-100 text-green-600"
-                >
-                  JavaScript
-                </Badge>
-                <Badge variant="secondary" className="text-xs">
-                  TypeScript
-                </Badge>
+                      {skill}
+                    </Badge>
+                  ))}
+                  {unmatchedSkills.map((skill) => (
+                    <Badge
+                      key={skill}
+                      className="text-xs bg-gray-100 text-gray-600"
+                    >
+                      {skill}
+                    </Badge>
+                  ))}
+                </div>
+               
               </div>
-              <p className="text-xs text-gray-500 mt-2">
-                Skills automatically extracted from job description
-              </p>
-            </div>
-
+            ) : (
+              <>
+                <p className="text-xs  mt-2 leading-0 text-red-400">
+                  No skills found in your profile.
+                </p>
+                <Link href={"/boards/skills"}>
+                  <Button className="text-sm flex items-center gap-1 cursor-pointer">
+                    <span>Add your skills</span>{" "}
+                    <span>
+                      <ExternalLink />
+                    </span>
+                  </Button>
+                </Link>
+              </>
+            )}
             <h4 className="font-semibold text-base">Description</h4>
             <p className="text-sm whitespace-pre-wrap bg-gray-50 p-4 rounded-md max-h-60 overflow-y-auto">
               {job.description || "Description not available"}
             </p>
 
             <DialogFooter className="justify-end flex-col-reverse md:flex-row">
-              <Button
+              <div
                 onClick={() => setIsEditting(true)}
-                className="px-6 font-semibold"
+                className=" bg-black px-6 py-2 rounded-md hover:bg-gray-800 text-white cursor-pointer duration-300 text-center"
                 aria-label={`Edit job details for ${job.title}`}
               >
                 Edit
-              </Button>
+              </div>
               <DialogClose asChild>
-                <Button
-                  variant="secondary"
-                  className="font-semibold"
+                <div
+                  className=" bg-gray-100 px-4 py-2 rounded-md hover:bg-gray-200 cursor-pointer duration-300 text-center"
                   aria-label="Close job details dialog"
                 >
                   Close
-                </Button>
+                </div>
               </DialogClose>
             </DialogFooter>
           </>

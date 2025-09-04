@@ -11,29 +11,20 @@ import {
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
-// Enums
+// ------------------ ENUMS ------------------
+
 export const modalityEnum = pgEnum("modality", ["remote", "on_site", "hybrid"]);
-export const columnEnum = pgEnum("column_title", [
-  "closed",
-  "applied",
-  "interview",
-  "offer",
-]);
+
+// ------------------ AUTH ------------------
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
-  emailVerified: boolean("email_verified")
-    .$defaultFn(() => false)
-    .notNull(),
+  emailVerified: boolean("email_verified").$defaultFn(() => false).notNull(),
   image: text("image"),
-  createdAt: timestamp("created_at")
-    .$defaultFn(() => /* @__PURE__ */ new Date())
-    .notNull(),
-  updatedAt: timestamp("updated_at")
-    .$defaultFn(() => /* @__PURE__ */ new Date())
-    .notNull(),
+  createdAt: timestamp("created_at").$defaultFn(() => new Date()).notNull(),
+  updatedAt: timestamp("updated_at").$defaultFn(() => new Date()).notNull(),
 });
 
 export const session = pgTable("session", {
@@ -72,17 +63,14 @@ export const verification = pgTable("verification", {
   identifier: text("identifier").notNull(),
   value: text("value").notNull(),
   expiresAt: timestamp("expires_at").notNull(),
-  createdAt: timestamp("created_at").$defaultFn(
-    () => /* @__PURE__ */ new Date()
-  ),
-  updatedAt: timestamp("updated_at").$defaultFn(
-    () => /* @__PURE__ */ new Date()
-  ),
+  createdAt: timestamp("created_at").$defaultFn(() => new Date()),
+  updatedAt: timestamp("updated_at").$defaultFn(() => new Date()),
 });
 
-// Boards
+// ------------------ BOARDS ------------------
+
 export const boards = pgTable("boards", {
-  id: uuid("id").primaryKey().defaultRandom(), 
+  id: uuid("id").primaryKey().defaultRandom(),
   title: varchar("title", { length: 256 }).notNull(),
   slug: varchar("slug", { length: 256 }).notNull().unique(),
   userId: text("user_id")
@@ -91,18 +79,19 @@ export const boards = pgTable("boards", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-// Columns
+// ------------------ COLUMNS ------------------
+
 export const columns = pgTable("columns", {
   id: serial("id").primaryKey(),
-  title: columnEnum("title").notNull(),
-  boardId: uuid("board_id") // <-- FIXED
+  title: varchar("title", { length: 50 }).notNull(),
+  boardId: uuid("board_id")
     .notNull()
     .references(() => boards.id),
   order: integer("order").notNull(),
 });
 
+// ------------------ JOBS ------------------
 
-// Jobs
 export const jobs = pgTable("jobs", {
   id: serial("id").primaryKey(),
   title: varchar("title", { length: 256 }).notNull(),
@@ -117,10 +106,53 @@ export const jobs = pgTable("jobs", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-// ------------------------------- RELATIONS --------------------------------
+// ------------------ SKILLS (Updated for user-specific logic) ------------------
+
+// 1. Categories per user
+export const skillCategories = pgTable("skill_categories", {
+  id: serial("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  name: varchar("name", { length: 100 }).notNull(),
+});
+
+// 2. Skills per user per category (custom or default)
+export const skills = pgTable("skills", {
+  id: serial("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  categoryId: integer("category_id")
+    .notNull()
+    .references(() => skillCategories.id, { onDelete: "cascade" }),
+  name: varchar("name", { length: 100 }).notNull(),
+  isCustom: boolean("is_custom").default(false).notNull(),
+});
+
+// 3. User-selected skills
+export const userSkills = pgTable(
+  "user_skills",
+  {
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    skillId: integer("skill_id")
+      .notNull()
+      .references(() => skills.id, { onDelete: "cascade" }),
+  },
+  (table) => ({
+    pk: [table.userId, table.skillId],
+  })
+);
+
+// ------------------ RELATIONS ------------------
 
 export const userRelations = relations(user, ({ many }) => ({
   boards: many(boards),
+  userSkills: many(userSkills),
+  skillCategories: many(skillCategories),
+  skills: many(skills),
 }));
 
 export const boardRelations = relations(boards, ({ one, many }) => ({
@@ -146,6 +178,39 @@ export const jobRelations = relations(jobs, ({ one }) => ({
   }),
 }));
 
+export const skillCategoryRelations = relations(skillCategories, ({ one, many }) => ({
+  user: one(user, {
+    fields: [skillCategories.userId],
+    references: [user.id],
+  }),
+  skills: many(skills),
+}));
+
+export const skillRelations = relations(skills, ({ one, many }) => ({
+  user: one(user, {
+    fields: [skills.userId],
+    references: [user.id],
+  }),
+  category: one(skillCategories, {
+    fields: [skills.categoryId],
+    references: [skillCategories.id],
+  }),
+  users: many(userSkills),
+}));
+
+export const userSkillRelations = relations(userSkills, ({ one }) => ({
+  user: one(user, {
+    fields: [userSkills.userId],
+    references: [user.id],
+  }),
+  skill: one(skills, {
+    fields: [userSkills.skillId],
+    references: [skills.id],
+  }),
+}));
+
+// ------------------ SCHEMA EXPORT ------------------
+
 export const schema = {
   user,
   session,
@@ -154,8 +219,14 @@ export const schema = {
   boards,
   columns,
   jobs,
+  skills,
+  skillCategories,
+  userSkills,
   userRelations,
   boardRelations,
   columnRelations,
   jobRelations,
+  skillRelations,
+  skillCategoryRelations,
+  userSkillRelations,
 };

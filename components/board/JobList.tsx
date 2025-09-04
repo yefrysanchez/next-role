@@ -30,8 +30,7 @@ const JobList = ({ initialJobs }: JobListProps) => {
       (job) =>
         job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         job.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (job.description &&
-          job.description.toLowerCase().includes(searchQuery.toLowerCase()))
+        job.salary?.includes(searchQuery)
     );
     setJobs(filteredJobs);
   }, [searchQuery, initialJobs]);

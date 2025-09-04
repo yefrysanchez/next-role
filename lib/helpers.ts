@@ -1,5 +1,6 @@
 import slugify from "slugify";
 import * as LucideIcons from "lucide-react"; // Import all icons as a namespace
+import { aliases, skillCategories } from "./tech-skills";
 
 export function getSlug(id: string, title: string): string {
   return `${id}-${slugify(title, { lower: true, strict: true })}`;
@@ -46,4 +47,100 @@ export function formatCurrency(amount: string): string {
   return `$${Math.floor(num)
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+}
+
+export function validatePassword(
+  password: string,
+  setError: (err: string | null) => void
+): boolean {
+  if (password.length < 8) {
+    setError("Password must be at least 8 characters long.");
+    return true;
+  }
+  if (!/[0-9]/.test(password)) {
+    setError("Password must contain at least one number.");
+    return true;
+  }
+  if (!/[A-Z]/.test(password)) {
+    setError("Password must contain at least one uppercase letter.");
+  }
+  if (!/[a-z]/.test(password)) {
+    setError("Password must contain at least one lowercase letter.");
+    return true;
+  }
+
+  setError(null);
+
+  return false;
+}
+
+// Skill Extraction -----
+
+
+function normalize(text: string): string {
+  return text.toLowerCase().trim();
+}
+
+/**
+ * Escapes regex special characters in alias or skill names
+ */
+function escapeRegex(text: string): string {
+  return text.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+}
+
+/**
+ * Check if a skill (or its aliases) is a whole-word match in the description
+ */
+function skillMatchesDescription(skill: string, description: string): boolean {
+  const normalizedDescription = normalize(description);
+
+  const normalizedSkill = normalize(skill);
+  const searchTerms = aliases[normalizedSkill] || [normalizedSkill];
+
+  return searchTerms.some((term) => {
+    const escapedTerm = escapeRegex(term);
+    const regex = new RegExp(`\\b${escapedTerm}\\b`, "i");
+    return regex.test(normalizedDescription);
+  });
+}
+
+export type SkillMatchResult = {
+  matchedSkills: string[];
+  unmatchedSkills: string[];
+};
+
+/**
+ * Extract matched and unmatched skills from job description
+ */
+export function getMatchedAndUnmatchedSkills(
+  userSkills: string[],
+  jobDescription: string
+): SkillMatchResult {
+  const normalizedUserSkills = userSkills.map(normalize);
+
+  // Flatten all skills from skillCategories (assumed defined elsewhere)
+  const allSkills = Object.values(skillCategories).flat();
+
+  const matchedSkills: string[] = [];
+  const unmatchedSkills: string[] = [];
+
+  // Matched: skills user has that appear in description
+  userSkills.forEach((skill) => {
+    if (skillMatchesDescription(skill, jobDescription)) {
+      matchedSkills.push(skill);
+    }
+  });
+
+  // Unmatched: skills in description but not in userSkills
+  allSkills.forEach((skill) => {
+    const normalizedSkill = normalize(skill);
+    const isInUserSkills = normalizedUserSkills.includes(normalizedSkill);
+    const isInDescription = skillMatchesDescription(skill, jobDescription);
+
+    if (isInDescription && !isInUserSkills) {
+      unmatchedSkills.push(skill);
+    }
+  });
+
+  return { matchedSkills, unmatchedSkills };
 }
