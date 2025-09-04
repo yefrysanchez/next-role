@@ -58,7 +58,7 @@ const JobCard = ({ job }: JobCardProps) => {
     };
 
     fetchColumns();
-  }, []);
+  }, [baseURL]);
 
   const handleModality = (str: string) => {
     if (str === "on_site") return "On Site";
