@@ -12,8 +12,10 @@ import {
 } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { authClient } from "@/lib/auth-client";
 import { skillCategories } from "@/lib/tech-skills";
 import { Search, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
@@ -22,7 +24,13 @@ const Page = () => {
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSkills = (skill: string) => {
+  const router = useRouter();
+
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  const { data: session } = authClient.useSession();
+
+  const handleSkills = async (skill: string) => {
     // Prevent multiple selections while loading
     if (isLoading) {
       toast.error("Please wait until the current operation is complete.");
@@ -35,6 +43,46 @@ const Page = () => {
       }
       return [...prev, skill];
     });
+  };
+
+  const handleSave = async () => {
+    if (!session?.user?.id) {
+      toast.error("You must be logged in to save skills.");
+      router.push("/login");
+      return;
+    }
+
+    if (selectedSkills.length === 0) {
+      toast.error("Please select at least one skill before saving.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const res = await fetch(`${baseUrl}/boards/skills`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: session.user.id,
+          skills: selectedSkills,
+        }),
+      });
+      if (!res.ok) {
+        toast.error("Failed to save skills. Please try again.");
+        return;
+      }
+
+      const data = await res.json();
+      toast.success(data.message || "Skills saved successfully!");
+    } catch (error) {
+      toast.error("An error occurred while saving skills.");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleDeleteSkill = (skill: string) => {
@@ -53,8 +101,6 @@ const Page = () => {
       setIsLoading(false);
     }, 500);
   };
-
-  const handleSave = () => {};
 
   return (
     <div className="pt-16 mx-4 ">
@@ -248,7 +294,7 @@ const Page = () => {
             <div className="border-dashed pb-8 border-b ">
               <h2 className="font-bold text">Database</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4">
-              {search
+                {search
                   ? skillCategories.Database.filter((skill) =>
                       skill.toLowerCase().includes(search.toLowerCase())
                     ).map((skill) => (
@@ -286,24 +332,26 @@ const Page = () => {
             <div className="border-dashed pb-8 border-b ">
               <h2 className="font-bold text">Cloud & DevOps</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4">
-              {search
-                  ? skillCategories["Cloud & DevOps"].filter((skill) =>
-                      skill.toLowerCase().includes(search.toLowerCase())
-                    ).map((skill) => (
-                      <div key={skill} className="flex items-center gap-2">
-                        <Checkbox
-                          checked={selectedSkills.includes(skill)}
-                          onCheckedChange={() => handleSkills(skill)}
-                          id={skill}
-                        />
-                        <label
-                          htmlFor={skill}
-                          className="font-medium text-sm select-none cursor-pointer"
-                        >
-                          {skill}
-                        </label>
-                      </div>
-                    ))
+                {search
+                  ? skillCategories["Cloud & DevOps"]
+                      .filter((skill) =>
+                        skill.toLowerCase().includes(search.toLowerCase())
+                      )
+                      .map((skill) => (
+                        <div key={skill} className="flex items-center gap-2">
+                          <Checkbox
+                            checked={selectedSkills.includes(skill)}
+                            onCheckedChange={() => handleSkills(skill)}
+                            id={skill}
+                          />
+                          <label
+                            htmlFor={skill}
+                            className="font-medium text-sm select-none cursor-pointer"
+                          >
+                            {skill}
+                          </label>
+                        </div>
+                      ))
                   : skillCategories["Cloud & DevOps"].map((skill) => (
                       <div key={skill} className="flex items-center gap-2">
                         <Checkbox
@@ -324,24 +372,26 @@ const Page = () => {
             <div className="border-dashed pb-8 border-b ">
               <h2 className="font-bold text">Tools & Others</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4">
-              {search
-                  ? skillCategories["Tools & Others"].filter((skill) =>
-                      skill.toLowerCase().includes(search.toLowerCase())
-                    ).map((skill) => (
-                      <div key={skill} className="flex items-center gap-2">
-                        <Checkbox
-                          checked={selectedSkills.includes(skill)}
-                          onCheckedChange={() => handleSkills(skill)}
-                          id={skill}
-                        />
-                        <label
-                          htmlFor={skill}
-                          className="font-medium text-sm select-none cursor-pointer"
-                        >
-                          {skill}
-                        </label>
-                      </div>
-                    ))
+                {search
+                  ? skillCategories["Tools & Others"]
+                      .filter((skill) =>
+                        skill.toLowerCase().includes(search.toLowerCase())
+                      )
+                      .map((skill) => (
+                        <div key={skill} className="flex items-center gap-2">
+                          <Checkbox
+                            checked={selectedSkills.includes(skill)}
+                            onCheckedChange={() => handleSkills(skill)}
+                            id={skill}
+                          />
+                          <label
+                            htmlFor={skill}
+                            className="font-medium text-sm select-none cursor-pointer"
+                          >
+                            {skill}
+                          </label>
+                        </div>
+                      ))
                   : skillCategories["Tools & Others"].map((skill) => (
                       <div key={skill} className="flex items-center gap-2">
                         <Checkbox
@@ -362,24 +412,26 @@ const Page = () => {
             <div className="border-dashed pb-8 border-b ">
               <h2 className="font-bold text">Soft Skills</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4">
-              {search
-                  ? skillCategories["Soft Skills"].filter((skill) =>
-                      skill.toLowerCase().includes(search.toLowerCase())
-                    ).map((skill) => (
-                      <div key={skill} className="flex items-center gap-2">
-                        <Checkbox
-                          checked={selectedSkills.includes(skill)}
-                          onCheckedChange={() => handleSkills(skill)}
-                          id={skill}
-                        />
-                        <label
-                          htmlFor={skill}
-                          className="font-medium text-sm select-none cursor-pointer"
-                        >
-                          {skill}
-                        </label>
-                      </div>
-                    ))
+                {search
+                  ? skillCategories["Soft Skills"]
+                      .filter((skill) =>
+                        skill.toLowerCase().includes(search.toLowerCase())
+                      )
+                      .map((skill) => (
+                        <div key={skill} className="flex items-center gap-2">
+                          <Checkbox
+                            checked={selectedSkills.includes(skill)}
+                            onCheckedChange={() => handleSkills(skill)}
+                            id={skill}
+                          />
+                          <label
+                            htmlFor={skill}
+                            className="font-medium text-sm select-none cursor-pointer"
+                          >
+                            {skill}
+                          </label>
+                        </div>
+                      ))
                   : skillCategories["Soft Skills"].map((skill) => (
                       <div key={skill} className="flex items-center gap-2">
                         <Checkbox

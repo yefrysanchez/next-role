@@ -123,11 +123,11 @@ export const skills = pgTable("skills", {
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
-  categoryId: integer("category_id")
-    .notNull()
-    .references(() => skillCategories.id, { onDelete: "cascade" }),
-  name: varchar("name", { length: 100 }).notNull(),
-  isCustom: boolean("is_custom").default(false).notNull(),
+  // categoryId: integer("category_id")
+  //   .notNull()
+  //   .references(() => skillCategories.id, { onDelete: "cascade" }),
+  name: varchar("name", { length: 100 }).notNull().unique(),
+  // isCustom: boolean("is_custom").default(false).notNull(),
 });
 
 // 3. User-selected skills
@@ -191,10 +191,10 @@ export const skillRelations = relations(skills, ({ one, many }) => ({
     fields: [skills.userId],
     references: [user.id],
   }),
-  category: one(skillCategories, {
-    fields: [skills.categoryId],
-    references: [skillCategories.id],
-  }),
+  // category: one(skillCategories, {
+  //   fields: [skills.categoryId],
+  //   references: [skillCategories.id],
+  // }),
   users: many(userSkills),
 }));
 
